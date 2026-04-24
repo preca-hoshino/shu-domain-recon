@@ -4,7 +4,6 @@ on:
   schedule:
     # 每天北京时间早上 6:00 运行 (UTC 22:00)
     - cron: '0 22 * * *'
-  # 允许在 GitHub Actions 页面手动触发
   workflow_dispatch:
 
 jobs:
@@ -14,43 +13,76 @@ jobs:
       contents: write
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      PYTHONUNBUFFERED: "1"
+      FORCE_COLOR: "1"
 
     steps:
+      # ── 1. 拉取代码 ────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 获取完整历史记录以确保 commit 正常
+          fetch-depth: 0
 
-      - name: Set up Python
+      # ── 2. 配置 Python 环境 ────────────────────────────────────
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          
+          cache: 'pip'
+
+      # ── 3. 安装依赖 ────────────────────────────────────────────
       - name: Install dependencies
         run: |
+          echo "::group::pip install"
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: Run Domain Recon (MD Only)
-        env:
-          PYTHONUNBUFFERED: "1"
-          FORCE_COLOR: "1"
+          echo "::endgroup::"
+          echo "依赖安装完成，已安装包列表:"
+          pip list
+
+      # ── 4. 执行侦察脚本 ────────────────────────────────────────
+      - name: Run Domain Recon
         run: |
+          echo "::group::运行参数"
+          echo "目标域名 : shu.edu.cn"
+          echo "最高并发 : 300"
+          echo "输出模式 : --md-only --no-progress"
+          echo "::endgroup::"
+
+          echo "::group::侦察日志"
           python run.py shu.edu.cn 300 --md-only --no-progress
-          
-      - name: Commit and Push MD Report
+          echo "::endgroup::"
+
+      # ── 5. 展示生成的报告内容 ─────────────────────────────────
+      - name: Show generated report
         run: |
+          echo "::group::analysis_report.md 内容预览"
+          if ls output/*/*.md 2>/dev/null | head -1 | xargs test -f; then
+            cat output/*/*.md
+          else
+            echo "未找到生成的 MD 报告文件。"
+          fi
+          echo "::endgroup::"
+
+      # ── 6. 提交并推送报告 ─────────────────────────────────────
+      - name: Commit and push report
+        run: |
+          echo "::group::Git 配置"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # output 目录在 .gitignore 中，使用 -f 强制添加生成的 md 文件
+          echo "::endgroup::"
+
+          echo "::group::添加文件"
           git add -f output/*/*.md
-          
-          # 检查是否有文件发生变更
+          git status
+          echo "::endgroup::"
+
+          echo "::group::提交与推送"
           if git diff --staged --quiet; then
-            echo "MD 报告没有变化，跳过提交。"
+            echo "MD 报告内容与上次相同，无需提交。"
           else
-            echo "检测到 MD 报告有更新，正在提交..."
             git commit -m "chore: 自动更新子域名探测分析报告 [skip ci]"
             git push
+            echo "已成功推送最新报告。"
           fi
+          echo "::endgroup::"
