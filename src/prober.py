@@ -46,8 +46,10 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
+from src.progress_util import make_progress
 
 console = Console()
+
 
 _HEADERS = {
     "User-Agent": (
@@ -281,14 +283,16 @@ class DomainProber:
         analyze_js: bool = True,
         extra_headers: Optional[dict[str, str]] = None,
         cookies: Optional[dict[str, str]] = None,
+        no_progress: bool = False,
     ) -> None:
         self.base_domain = base_domain.lower().strip()
         self.concurrency = concurrency
         self.timeout = timeout
-        self.analyze_js = analyze_js  # 是否启用 JS/SourceMap 深度分析
-        # 合并内置基础请求头与用户自定义请求头（用户头优先）
+        self.analyze_js = analyze_js
+        self._no_progress = no_progress
         self._request_headers = {**_HEADERS, **(extra_headers or {})}
         self._cookies = cookies or {}
+
         # 强制子域名必须以字母或数字开头，防止提取出 `.shu.edu.cn` 这种无效域名
         self.domain_regex = re.compile(
             r"([a-zA-Z0-9][a-zA-Z0-9.-]*\." + re.escape(self.base_domain) + r")",
@@ -331,15 +335,7 @@ class DomainProber:
             headers=self._request_headers,
             cookies=self._cookies,
         ) as client:
-            with Progress(
-                SpinnerColumn(),
-                TextColumn("[progress.description]{task.description}"),
-                BarColumn(),
-                MofNCompleteColumn(),
-                TaskProgressColumn(),
-                TimeElapsedColumn(),
-                console=console,
-            ) as progress:
+            with make_progress(no_progress=self._no_progress, console=console) as progress:
                 task = progress.add_task(
                     f"HTTP 探活中... (第 {round_idx} 轮)", total=len(domains)
                 )

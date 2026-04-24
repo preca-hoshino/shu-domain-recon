@@ -35,8 +35,10 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
+from src.progress_util import make_progress
 
 console = Console()
+
 
 # 已知云厂商和 CDN 的 IP 段前缀，检测后排除（避免扫描无关的公共基础设施）
 _CLOUD_CDN_PREFIXES = [
@@ -87,14 +89,17 @@ class IPScanner:
         domain_ip_map: dict[str, str],
         ptr_concurrency: int = _DEFAULT_PTR_CONCURRENCY,
         tls_concurrency: int = _DEFAULT_TLS_CONCURRENCY,
+        no_progress: bool = False,
     ) -> None:
         self.base_domain = base_domain.lower().strip()
         self.domain_ip_map = domain_ip_map
         self._ptr_concurrency = ptr_concurrency
         self._tls_concurrency = tls_concurrency
+        self._no_progress = no_progress
         self._new_domains: set[str] = set()
         self.target_c_classes: set[str] = set()
         self.target_b_classes: set[str] = set()
+
 
     async def run(self) -> list[str]:
         """执行完整的 IP 空间扫描流程。"""
@@ -179,22 +184,13 @@ class IPScanner:
         semaphore = asyncio.Semaphore(self._ptr_concurrency)
         found_count = 0
 
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            MofNCompleteColumn(),
-            TaskProgressColumn(),
-            TimeElapsedColumn(),
-            console=console,
-        ) as progress:
+        with make_progress(no_progress=self._no_progress, console=console) as progress:
             task = progress.add_task("PTR 反查中...", total=len(ips))
 
             async def _ptr_worker(ip: str) -> None:
                 nonlocal found_count
                 async with semaphore:
                     try:
-                        # 将 IP 转换为 PTR 格式（如 202.120.3.1 → 1.3.120.202.in-addr.arpa）
                         reversed_ip = ".".join(reversed(ip.split(".")))
                         ptr_name = f"{reversed_ip}.in-addr.arpa"
                         result = await resolver.query(ptr_name, "PTR")
@@ -205,11 +201,12 @@ class IPScanner:
                                 found_count += 1
                                 console.log(f"[green][PTR] {ip} → {hostname}[/]")
                     except Exception:
-                        pass  # NXDOMAIN 或超时，正常情况
+                        pass
                     finally:
                         progress.advance(task)
 
             await asyncio.gather(*[_ptr_worker(ip) for ip in ips], return_exceptions=True)
+
 
         console.print(f"[green][PTR扫描] 完成，发现 {found_count} 条有效反查记录[/]")
 
@@ -223,16 +220,9 @@ class IPScanner:
         found_count = 0
         total_tasks = len(ips) * len(_TLS_PORTS)
 
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            MofNCompleteColumn(),
-            TaskProgressColumn(),
-            TimeElapsedColumn(),
-            console=console,
-        ) as progress:
+        with make_progress(no_progress=self._no_progress, console=console) as progress:
             task = progress.add_task("TLS 证书探测中...", total=total_tasks)
+
 
             async def _tls_worker(ip: str, port: int) -> None:
                 nonlocal found_count

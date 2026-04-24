@@ -111,6 +111,11 @@ def _parse_args() -> argparse.Namespace:
         default=2,
         help="递归爆破的最大层数（默认 2 层）",
     )
+    parser.add_argument(
+        "--no-progress",
+        action="store_true",
+        help="关闭动态进度条，改为逐行静态日志输出，适配 GitHub Actions 等 CI 环境",
+    )
     return parser.parse_args()
 
 
@@ -130,7 +135,9 @@ def _print_banner(domain: str, concurrency: int, args: argparse.Namespace) -> No
         "HTTP 探活  (CSP/CORS/HTML 解析)": not args.skip_probe,
         "JS/SourceMap 深度分析": not args.skip_probe and not args.skip_js,
         "IP 空间扫描 (PTR + TLS 证书)": not args.skip_ip_scan,
+        "动态进度条 (CI 模式)": not getattr(args, "no_progress", False),
     }
+
 
     # 并发量分配
     brute_c = concurrency
@@ -228,7 +235,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
 
     # ── 阶段 1: 被动枚举 ─────────────────────────────────────────
     if not args.skip_passive:
-        enumerator = SubdomainEnumerator(domain)
+        enumerator = SubdomainEnumerator(domain, no_progress=args.no_progress)
         passive_domains = await enumerator.run()
         c.print(f"[bold green][✓] 被动枚举完成[/] — 共发现 [yellow]{len(passive_domains)}[/] 个子域名")
     else:
@@ -236,7 +243,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
 
     # ── 阶段 2: 主动 DNS 字典爆破（含 AXFR 检测 + 变异爆破）──────
     if not args.skip_brute:
-        bruteforcer = DNSBruteForcer(domain=domain, concurrency=brute_concurrency)
+        bruteforcer = DNSBruteForcer(domain=domain, concurrency=brute_concurrency, no_progress=args.no_progress)
         brute_domains = await bruteforcer.run()
     else:
         c.print("[dim][→] DNS 字典爆破已跳过[/]")
@@ -263,6 +270,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
             base_domain=domain,
             concurrency=brute_concurrency,
             max_depth=recursive_depth,
+            no_progress=args.no_progress,
         )
         recursive_new = await recursive_bruter.run(merged)
         if recursive_new:
@@ -301,6 +309,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
             analyze_js=analyze_js,
             extra_headers=extra_headers,
             cookies=cookies,
+            no_progress=args.no_progress,
         )
 
         # 尝试加载历史探活结果，避免重复扫描导致 IP 被封
@@ -383,6 +392,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
                 domain_ip_map=domain_ip_map,
                 ptr_concurrency=ptr_concurrency,
                 tls_concurrency=tls_concurrency,
+                no_progress=args.no_progress,
             )
             ip_found_domains = await ip_scanner.run()
             target_b_classes = ip_scanner.target_b_classes

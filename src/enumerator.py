@@ -23,8 +23,10 @@ from typing import Any
 import httpx
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from src.progress_util import make_progress
 
 console = Console()
+
 
 
 class SubdomainEnumerator:
@@ -32,9 +34,11 @@ class SubdomainEnumerator:
 
     TIMEOUT = 25  # 秒，部分慢源需要更长时间
 
-    def __init__(self, domain: str) -> None:
+    def __init__(self, domain: str, no_progress: bool = False) -> None:
         self.domain = domain.lower().strip()
         self._results: set[str] = set()
+        self._no_progress = no_progress
+
 
     # ── 公共入口 ───────────────────────────────────────────────
     async def run(self) -> list[str]:
@@ -42,12 +46,9 @@ class SubdomainEnumerator:
 
         # ── 阶段一：7 个快速数据源并发查询 ──────────────────────
         source_count = 7
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            console=console,
-        ) as progress:
+        with make_progress(no_progress=self._no_progress, console=console) as progress:
             task = progress.add_task(f"正在查询 {source_count} 个被动数据源...", total=None)
+
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
             async with httpx.AsyncClient(
                 timeout=self.TIMEOUT, follow_redirects=True, verify=False, headers=headers

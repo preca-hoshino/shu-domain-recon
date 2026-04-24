@@ -31,8 +31,10 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
+from src.progress_util import make_progress
 
 console = Console()
+
 
 # 内置公共 DNS 服务器列表
 _DEFAULT_RESOLVERS = [
@@ -90,10 +92,12 @@ class DNSBruteForcer:
         wordlist_path: Optional[Path] = None,
         concurrency: int = 500,
         resolvers: Optional[list[str]] = None,
+        no_progress: bool = False,
     ) -> None:
         self.domain = domain.lower().strip()
         self.concurrency = concurrency
         self.resolvers = resolvers or _DEFAULT_RESOLVERS
+        self._no_progress = no_progress
         self._wordlist_path = wordlist_path or (
             Path(__file__).parent.parent / "data" / "wordlist.txt"
         )
@@ -204,15 +208,7 @@ class DNSBruteForcer:
         """通用的批量 DNS 爆破执行器。"""
         semaphore = asyncio.Semaphore(self.concurrency)
 
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            MofNCompleteColumn(),
-            TaskProgressColumn(),
-            TimeElapsedColumn(),
-            console=console,
-        ) as progress:
+        with make_progress(no_progress=self._no_progress, console=console) as progress:
             task = progress.add_task(f"DNS {label}中...", total=len(words))
 
             async def _worker(word: str) -> None:
@@ -221,6 +217,7 @@ class DNSBruteForcer:
                     progress.advance(task)
 
             await asyncio.gather(*[_worker(w) for w in words], return_exceptions=True)
+
 
     async def _check_axfr(self) -> None:
         """尝试进行 DNS 区域传输 (AXFR)。如果成功，能直接获取所有子域名。"""

@@ -35,8 +35,10 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
+from src.progress_util import make_progress
 
 console = Console()
+
 
 # 默认公共 DNS 服务器
 _DEFAULT_RESOLVERS = [
@@ -120,13 +122,16 @@ class RecursiveBruter:
         max_depth: int = 2,
         resolvers: Optional[list[str]] = None,
         extra_wordlist: Optional[Path] = None,
+        no_progress: bool = False,
     ) -> None:
         self.base_domain = base_domain.lower().strip()
         self.concurrency = concurrency
-        self.max_depth = max_depth  # 最多递归几层（从第一级子域算起）
+        self.max_depth = max_depth
         self.resolvers = resolvers or _DEFAULT_RESOLVERS
         self._extra_wordlist = extra_wordlist
+        self._no_progress = no_progress
         self._results: set[str] = set()
+
 
     async def run(self, known_domains: list[str]) -> list[str]:
         """
@@ -244,15 +249,7 @@ class RecursiveBruter:
         found: set[str] = set()
         semaphore = asyncio.Semaphore(self.concurrency)
 
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            MofNCompleteColumn(),
-            TaskProgressColumn(),
-            TimeElapsedColumn(),
-            console=console,
-        ) as progress:
+        with make_progress(no_progress=self._no_progress, console=console) as progress:
             task = progress.add_task(f"递归爆破 {label}...", total=len(words))
 
             async def _worker(word: str) -> None:
@@ -261,7 +258,6 @@ class RecursiveBruter:
                     try:
                         result = await resolver.query(fqdn, "A")
                         resolved_ips = {r.host for r in result}
-                        # 泛解析过滤
                         if resolved_ips and not resolved_ips.issubset(wildcard_ips):
                             found.add(fqdn)
                             console.log(
@@ -274,6 +270,7 @@ class RecursiveBruter:
                         progress.advance(task)
 
             await asyncio.gather(*[_worker(w) for w in words], return_exceptions=True)
+
 
         return found
 
