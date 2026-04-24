@@ -30,6 +30,9 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run Domain Recon (MD Only)
+        env:
+          PYTHONUNBUFFERED: "1"
+          FORCE_COLOR: "1"
         run: |
           # 运行侦察脚本，并带上 --md-only 参数
           python run.py shu.edu.cn 300 --md-only
