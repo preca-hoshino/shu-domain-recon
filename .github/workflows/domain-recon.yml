@@ -108,6 +108,8 @@ jobs:
             COMMIT_MSG="recon(shu.edu.cn): 存活 ${ALIVE_COUNT} 个子域名, 耗时 ${ELAPSED_MIN}m${ELAPSED_SEC}s [skip ci]"
             echo "提交标题: $COMMIT_MSG"
             git commit -m "$COMMIT_MSG"
+            # 如果在 CI 运行期间有新的提交，先拉取并合并（使用 rebase 保持提交线整洁）
+            git pull --rebase origin main || git rebase --abort
             git push
             echo "已成功推送最新报告。"
           fi
