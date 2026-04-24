@@ -11,8 +11,10 @@ jobs:
   run-and-commit:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 允许推送到仓库
-      
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
