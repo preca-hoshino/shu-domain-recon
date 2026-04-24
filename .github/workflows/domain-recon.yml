@@ -59,12 +59,16 @@ jobs:
       - name: Show generated report
         run: |
           echo "::group::analysis_report.md 内容预览"
-          if ls output/*/*.md 2>/dev/null | head -1 | xargs test -f; then
-            cat output/*/*.md
+          MD_FILE=$(find output -name "*.md" 2>/dev/null | head -1)
+          if [ -n "$MD_FILE" ]; then
+            echo "报告路径: $MD_FILE"
+            echo "---"
+            cat "$MD_FILE"
           else
-            echo "未找到生成的 MD 报告文件。"
+            echo "未找到生成的 MD 报告文件，请检查侦察步骤日志。"
           fi
           echo "::endgroup::"
+
 
       # ── 6. 提交并推送报告 ─────────────────────────────────────
       - name: Commit and push report
