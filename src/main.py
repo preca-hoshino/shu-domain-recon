@@ -157,11 +157,12 @@ def _print_banner(domain: str, concurrency: int, args: argparse.Namespace) -> No
         "HTTP 探活  (CSP/CORS/HTML 解析)": str(probe_c),
         "JS/SourceMap 深度分析": str(probe_c),
         "IP 空间扫描 (PTR + TLS 证书)": f"PTR={ptr_c} / TLS={tls_c}",
+        "动态进度条 (CI 模式)": "-",
     }
 
     for step_name, enabled in steps.items():
-        status = "[green]✓ 启用[/]" if enabled else "[red]✗ 跳过[/]"
-        table.add_row(step_name, status, concurrency_map[step_name])
+        status = "[green]\u2713 启用[/]" if enabled else "[red]\u2717 跳过[/]"
+        table.add_row(step_name, status, concurrency_map.get(step_name, "-"))
 
     c.print(Panel(
         table,
