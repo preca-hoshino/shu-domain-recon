@@ -28,4 +28,12 @@ if __name__ == "__main__":
         from src.prober import force_shutdown_process_pool
         force_shutdown_process_pool()
         import os
+        # os._exit() 会绕过 Python 清理流程，直接终止进程（用于强制回收子进程池）。
+        # 在此之前必须手动 flush，否则 rich Console 等库的内部缓冲区内容会全部丢失，
+        # 导致 CI 日志面板看不到任何脚本输出。
+        try:
+            sys.stdout.flush()
+            sys.stderr.flush()
+        except Exception:
+            pass
         os._exit(0)
