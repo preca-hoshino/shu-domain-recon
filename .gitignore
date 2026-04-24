@@ -68,5 +68,3 @@ venv.bak/
 
 # Project specific
 output/
-data/*.txt
-!data/.keep
