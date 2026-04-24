@@ -50,7 +50,9 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::侦察日志"
+          echo "RECON_START=$(date +%s)" >> $GITHUB_ENV
           python run.py shu.edu.cn 300 --md-only --no-progress
+          echo "RECON_END=$(date +%s)" >> $GITHUB_ENV
           echo "::endgroup::"
 
       # ── 5. 展示生成的报告内容 ─────────────────────────────────
@@ -81,7 +83,15 @@ jobs:
           if git diff --staged --quiet; then
             echo "MD 报告内容与上次相同，无需提交。"
           else
-            git commit -m "chore: 自动更新子域名探测分析报告 [skip ci]"
+            # 从 MD 报告提取存活子域名数量
+            ALIVE_COUNT=$(grep -oP '域名数量：\K[0-9]+' output/*/*.md 2>/dev/null | head -1 || echo "?")
+            # 计算运行耗时
+            ELAPSED=$(( RECON_END - RECON_START ))
+            ELAPSED_MIN=$(( ELAPSED / 60 ))
+            ELAPSED_SEC=$(( ELAPSED % 60 ))
+            COMMIT_MSG="recon(shu.edu.cn): 存活 ${ALIVE_COUNT} 个子域名, 耗时 ${ELAPSED_MIN}m${ELAPSED_SEC}s [skip ci]"
+            echo "提交标题: $COMMIT_MSG"
+            git commit -m "$COMMIT_MSG"
             git push
             echo "已成功推送最新报告。"
           fi
