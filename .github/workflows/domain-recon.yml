@@ -76,8 +76,10 @@ jobs:
 
           echo "::group::添加文件"
           git add -f output/*/*.md
+          git add -f data/
           git status
           echo "::endgroup::"
+
 
           echo "::group::提交与推送"
           if git diff --staged --quiet; then
