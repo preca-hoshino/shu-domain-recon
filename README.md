@@ -1,85 +1,82 @@
 # SHU-Domain-Recon
 
-上海大学域名资产侦察工具 (Domain Reconnaissance Tool) — 自动化多阶段子域名发现与深度探活。
+上海大学域名资产侦察工具。基于 Python 3.11+ 异步架构实现，涵盖多阶段子域名发现、HTTP 存活探测及 CI 持续监控，适用于高校网络资产梳理场景。
 
-基于 Python 3.11+ 异步编写，具备高并发、广度优先爬取、自动化资产分析以及 GitHub Actions CI 集成能力。
+## 功能概述
 
-## 🌟 核心特性
+- **多源被动枚举**：聚合 7 个公开威胁情报数据源，叠加 Wayback Machine 历史记录抓取，覆盖最大化。
+- **主动 DNS 爆破**：支持 AXFR 区域传输检测、变异字典生成，内置 Simhash 泛解析过滤机制，抑制误报。
+- **多级递归发现**：对容器型节点（如 `*.sub.domain.com`）自动展开递归爆破，发现隐藏层级资产。
+- **HTTP 深度探活**：异步并发探测，采集状态码、标题、服务端指纹、技术栈等字段；解析 CSP/CORS 响应头及 JS/SourceMap 文件，提取内部 API 端点与子域名引用。
+- **IP 空间横向拓展**：对存活资产的 IP 执行 PTR 反向解析与 TLS 证书 SAN 字段提取，自动推断 C 段/B 段归属。
+- **身份验证支持**：加载 Chrome DevTools 导出的 `curl.cmd` 文件，自动注入 Cookie 及自定义请求头，探测需要 SSO 认证的内网系统。
+- **持续监控集成**：内置 GitHub Actions 工作流，定时执行侦察流程并将 Markdown 格式差异报告自动提交至仓库，实现无人值守监控。
 
-- **多源被动枚举**：聚合 7 大公开数据源、Wayback Machine 历史记录抓取。
-- **主动 DNS 爆破**：支持 AXFR 区域传输检测、动态变异字典爆破、智能 Simhash 泛解析过滤机制。
-- **递归深度发现**：针对容器型节点（如 `*.a.domain.com`）自动进行多级递归爆破。
-- **全方位 HTTP 探活**：异步并发探测，智能抓取 CSP/CORS 头，深度解析 HTML/JS/SourceMap 提取隐藏的 API 和内部子域名。
-- **IP 空间横向拓展**：自动提取存活资产 IP，进行 C 段 / B 段推断，通过 PTR 反向解析和 TLS 证书 SAN 提取隐蔽资产。
-- **认证绕过与黑名单**：支持加载 Chrome 导出的 `curl.cmd` 自动携带 Cookie 与请求头绕过 SSO；支持灵活的域名黑名单过滤。
-- **自动化监控 (CI/CD)**：内置 GitHub Actions 工作流，每天自动运行并提交 Markdown 格式的资产变更报告。
-
-## 📦 安装与配置
+## 安装
 
 ```bash
-# 1. 克隆代码
 git clone https://github.com/preca-hoshino/shu-domain-recon.git
 cd shu-domain-recon
-
-# 2. 安装依赖
 python -m pip install -r requirements.txt
 ```
 
-## 🚀 快速使用
+## 使用
 
-基本命令格式：
+命令格式：
+
 ```bash
 python run.py <目标域名> <最高并发量> [选项]
 ```
 
-### 常用命令示例
+示例：
 
 ```bash
-# 全流程：对 shu.edu.cn 进行全面资产侦察，最高并发 300（推荐）
+# 全流程侦察（推荐并发量 200~500）
 python run.py shu.edu.cn 300
 
-# 仅生成 Markdown 报告（不输出 CSV/JSON/TXT 等其他文件，适合配合 CI 自动化监控使用）
+# 仅输出 Markdown 分析报告，跳过 CSV / JSON / TXT 等附属文件（适合 CI 场景）
 python run.py shu.edu.cn 300 --md-only
 
-# 加载浏览器导出的 curl.cmd 以绕过身份验证，并应用黑名单
+# 携带浏览器认证信息，跳过已知资产并排除黑名单域名
 python run.py shu.edu.cn 300 --curl curl.cmd --blacklist blacklist.txt
 
-# 指定只进行某个阶段的测试（例如跳过 DNS 爆破和 IP 空间扫描）
+# 仅执行被动枚举与 HTTP 探活，跳过 DNS 爆破和 IP 横向扫描
 python run.py shu.edu.cn 300 --skip-brute --skip-ip-scan
 ```
 
-### 完整参数列表
+### 参数说明
 
-| 参数 / 选项 | 说明 |
+| 参数 | 说明 |
 | :--- | :--- |
-| `domain` | **必填**。目标域名，例如：`shu.edu.cn` |
-| `concurrency` | **必填**。模块并发上限（推荐 200~1000） |
-| `--curl <file>` | 直接加载 Chrome DevTools 导出的 `curl.cmd` 自动提取 Cookie + 请求头 |
-| `--blacklist <file>` | 黑名单域名文件路径（每行一个），匹配的域名将被跳过 |
-| `--recursive-depth <N>` | 递归爆破的最大层数（默认 `2` 层） |
-| `--skip-passive` | 跳过被动子域名枚举阶段 |
+| `domain` | 目标根域名，例如 `shu.edu.cn`（必填） |
+| `concurrency` | 各模块并发上限（必填），推荐 200~1000 |
+| `--curl <file>` | Chrome DevTools 导出的 `curl.cmd` 文件路径，自动提取 Cookie 与请求头 |
+| `--blacklist <file>` | 黑名单文件路径，每行一个域名，匹配项及其子域将被排除 |
+| `--recursive-depth <N>` | 递归爆破最大层数，默认 `2` |
+| `--skip-passive` | 跳过被动枚举阶段 |
 | `--skip-brute` | 跳过 DNS 字典爆破阶段 |
-| `--skip-recursive` | 跳过多级递归子域名爆破阶段 |
+| `--skip-recursive` | 跳过递归爆破阶段 |
 | `--skip-probe` | 跳过 HTTP 探活阶段 |
-| `--skip-js` | 在 HTTP 探活阶段跳过 JS/SourceMap 深度分析 |
+| `--skip-js` | 探活阶段跳过 JS/SourceMap 深度分析 |
 | `--skip-ip-scan` | 跳过 IP 空间横向扫描阶段 |
-| `--md-only` | 只生成 Markdown 分析报告，不输出其他格式的结果文件 |
+| `--md-only` | 仅生成 Markdown 分析报告，不写入其他格式文件 |
 
-## 📁 报告与输出
+## 输出
 
-所有执行结果都会自动在 `output/<目标域名>/` 目录下生成专属报告：
+所有结果写入 `output/<目标域名>/` 目录：
 
-- `analysis_report.md`：核心分析报告（包含存活资产列表、SSO 认证状态、推断的 C 段/B 段，自动按包含中文标题的页面优先级排序）。
-- `subdomains.txt`：所有发现的有效子域名的纯文本列表。
-- `results.csv`：结构化的存活探活结果（支持 Excel 打开）。
-- `results.json`：带有 Metadata 元信息的完整 JSON 数据，便于对接 Nuclei 或 ELK。
-- `inferred_ip_ranges.txt`：基于横向扫描推测出的目标网段分布。
+| 文件 | 内容 |
+| :--- | :--- |
+| `analysis_report.md` | 存活资产汇总分析，含 SSO 状态标记与 C/B 段推断，按中文标题资产优先排序 |
+| `subdomains.txt` | 枚举阶段发现的全部子域名列表 |
+| `results.csv` | 结构化探活结果，可直接用 Excel 打开 |
+| `results.json` | 带元信息的完整 JSON 数据，适合对接 Nuclei、ELK 等下游工具 |
+| `inferred_ip_ranges.txt` | 基于存活 IP 推断的目标网段（C 段 / B 段） |
 
-## 🤖 自动化持续监控 (GitHub Actions)
+## CI 持续监控
 
-本项目内置了自动化 CI 配置 `.github/workflows/domain-recon.yml`。
-它会每天自动运行 `python run.py shu.edu.cn 300 --md-only`，并将生成的最新 `analysis_report.md` 直接 Commit 到本仓库。
+项目内置 GitHub Actions 工作流 (`.github/workflows/domain-recon.yml`)，配置了以下运行策略：
 
-**配置优势：**
-- **实时显示：** 配置了 `PYTHONUNBUFFERED` 和 `FORCE_COLOR` 环境变量，能够在 Actions 的 Console 界面输出美观、无延迟的彩色终端日志。
-- **免维护：** 只需要推送至 GitHub，云端即会自动按期执行侦察，实现对高校网络资产变更情况的无人值守监控。
+- **定时执行**：每日 UTC 22:00（北京时间次日 06:00）自动触发。
+- **手动触发**：在 Actions 页面点击 Run workflow 可即时执行。
+- **自动提交**：侦察完成后，若 `analysis_report.md` 内容发生变化，工作流自动将其 Commit 并推送至仓库，便于通过 Git 历史追踪资产变更。
