@@ -1,0 +1,52 @@
+name: Domain Recon CI
+
+on:
+  schedule:
+    # 每天北京时间早上 6:00 运行 (UTC 22:00)
+    - cron: '0 22 * * *'
+  # 允许在 GitHub Actions 页面手动触发
+  workflow_dispatch:
+
+jobs:
+  run-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 允许推送到仓库
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整历史记录以确保 commit 正常
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Run Domain Recon (MD Only)
+        run: |
+          # 运行侦察脚本，并带上 --md-only 参数
+          python run.py shu.edu.cn 300 --md-only
+          
+      - name: Commit and Push MD Report
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # output 目录在 .gitignore 中，使用 -f 强制添加生成的 md 文件
+          git add -f output/*/*.md
+          
+          # 检查是否有文件发生变更
+          if git diff --staged --quiet; then
+            echo "MD 报告没有变化，跳过提交。"
+          else
+            echo "检测到 MD 报告有更新，正在提交..."
+            git commit -m "chore: 自动更新子域名探测分析报告 [skip ci]"
+            git push
+          fi
