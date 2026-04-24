@@ -529,3 +529,22 @@ uwsgi
 gunicorn
 unicorn
 puma
+
+# ── 扩展补充词汇 ────────────────────────────────────────────────
+sso1
+vcenter
+esxi
+mfa
+vpn3
+vpn4
+work
+office
+desktop
+vdi
+dams
+cas1
+cas2
+meeting1
+live
+vlab
+gpu

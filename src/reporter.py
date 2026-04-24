@@ -203,7 +203,7 @@ class Reporter:
             display_domain = r.domain
             
             auth = "🔒 " if r.requires_auth else ""
-            lines.append(f"| {r.status} | {auth}{display_domain} | {title} | {tech} | {r.ip} |")
+            lines.append(f"| {r.status} | {auth}[{display_domain}]({r.url}) | {title} | {tech} | {r.ip} |")
             
         lines.append("")
         lines.append("**IP段推断分析**")

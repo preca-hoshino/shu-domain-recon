@@ -45,13 +45,13 @@ jobs:
         run: |
           echo "::group::运行参数"
           echo "目标域名 : shu.edu.cn"
-          echo "最高并发 : 1000"
-          echo "输出模式 : --md-only --no-progress --skip-ip-scan"
+          echo "最高并发 : 1200"
+          echo "输出模式 : --md-only --no-progress"
           echo "::endgroup::"
 
           echo "::group::侦察日志"
           printf 'RECON_START=%s\n' "$(date +%s)" >> $GITHUB_ENV
-          python run.py shu.edu.cn 1000 --md-only --no-progress --skip-ip-scan
+          python run.py shu.edu.cn 1200 --md-only --no-progress
           printf 'RECON_END=%s\n' "$(date +%s)" >> $GITHUB_ENV
           echo "::endgroup::"
 
