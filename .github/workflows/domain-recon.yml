@@ -50,9 +50,9 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::侦察日志"
-          echo "RECON_START=$(date +%s)" >> $GITHUB_ENV
+          printf 'RECON_START=%s\n' "$(date +%s)" >> $GITHUB_ENV
           python run.py shu.edu.cn 300 --md-only --no-progress
-          echo "RECON_END=$(date +%s)" >> $GITHUB_ENV
+          printf 'RECON_END=%s\n' "$(date +%s)" >> $GITHUB_ENV
           echo "::endgroup::"
 
       # ── 5. 展示生成的报告内容 ─────────────────────────────────
@@ -79,8 +79,18 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::添加文件"
-          git add -f output/*/*.md
-          git add -f data/
+          # 使用 find 代替 glob，避免无匹配时 git add 报 fatal
+          mapfile -t MD_FILES < <(find output -name "*.md" 2>/dev/null)
+          if [ ${#MD_FILES[@]} -gt 0 ]; then
+            git add -f "${MD_FILES[@]}"
+            echo "已添加 ${#MD_FILES[@]} 个 MD 文件"
+          else
+            echo "未找到 MD 文件，跳过添加"
+          fi
+          if [ -d data ] && [ -n "$(ls -A data/ 2>/dev/null)" ]; then
+            git add -f data/
+            echo "已添加 data/ 目录"
+          fi
           git status
           echo "::endgroup::"
 
