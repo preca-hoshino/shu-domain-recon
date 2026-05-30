@@ -66,5 +66,7 @@ venv.bak/
 *.swp
 *.swo
 
-# Project specific
-output/
+# Project specific — ignore output data files, keep reports
+output/**/*.csv
+output/**/*.json
+output/**/*.txt

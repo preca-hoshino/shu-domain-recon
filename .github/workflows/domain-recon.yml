@@ -74,24 +74,30 @@ jobs:
       - name: Commit and push report
         run: |
           echo "::group::Git 配置"
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           echo "::endgroup::"
 
           echo "::group::添加文件"
           # 使用 find 代替 glob，避免无匹配时 git add 报 fatal
           mapfile -t MD_FILES < <(find output -name "*.md" 2>/dev/null)
           if [ ${#MD_FILES[@]} -gt 0 ]; then
-            git add -f "${MD_FILES[@]}"
+            echo "找到 ${#MD_FILES[@]} 个 MD 文件:"
+            printf '  %s\n' "${MD_FILES[@]}"
+            git add "${MD_FILES[@]}"
             echo "已添加 ${#MD_FILES[@]} 个 MD 文件"
           else
-            echo "未找到 MD 文件，跳过添加"
+            echo "::error::未找到 MD 文件，侦察脚本可能未正常生成报告"
+            exit 1
           fi
           if [ -d data ] && [ -n "$(ls -A data/ 2>/dev/null)" ]; then
-            git add -f data/
+            git add data/
             echo "已添加 data/ 目录"
           fi
+          echo "--- git status ---"
           git status
+          echo "--- git diff --staged ---"
+          git diff --staged --stat
           echo "::endgroup::"
 
 
@@ -109,8 +115,8 @@ jobs:
             echo "提交标题: $COMMIT_MSG"
             git commit -m "$COMMIT_MSG"
             # 如果在 CI 运行期间有新的提交，先拉取并合并（使用 rebase 保持提交线整洁）
-            git pull --rebase origin main || git rebase --abort
-            git push
+            git pull --rebase origin main || { git rebase --abort 2>/dev/null; echo "::warning::Rebase 失败，将直接推送"; }
+            git push origin HEAD:main
             echo "已成功推送最新报告。"
           fi
           echo "::endgroup::"
