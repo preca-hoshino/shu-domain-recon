@@ -1,5 +1,8 @@
 # 上海大学域名侦察 黑名单配置
-# 匹配规则：精确匹配或子域名匹配
-# 例如写入 vpn.shu.edu.cn，则 vpn.shu.edu.cn 及其所有子域名（如 a.vpn.shu.edu.cn）都会被跳过
+# 匹配规则：纯域名或完整URL均支持，自动提取域名部分进行匹配
+# 例如写入 vpn.shu.edu.cn 或 https://vpn.shu.edu.cn/login，
+# 则 vpn.shu.edu.cn 及其所有子域名（如 a.vpn.shu.edu.cn）都会被跳过
+#
+# 注意：白名单中的域名不受黑名单约束
 
 webvpn.shu.edu.cn
