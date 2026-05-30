@@ -284,6 +284,7 @@ class DomainProber:
         extra_headers: Optional[dict[str, str]] = None,
         cookies: Optional[dict[str, str]] = None,
         no_progress: bool = False,
+        proxy: Optional[str] = None,
     ) -> None:
         self.base_domain = base_domain.lower().strip()
         self.concurrency = concurrency
@@ -292,6 +293,7 @@ class DomainProber:
         self._no_progress = no_progress
         self._request_headers = {**_HEADERS, **(extra_headers or {})}
         self._cookies = cookies or {}
+        self._proxy = proxy
 
         # 强制子域名必须以字母或数字开头，防止提取出 `.shu.edu.cn` 这种无效域名
         self.domain_regex = re.compile(
@@ -334,6 +336,7 @@ class DomainProber:
             limits=limits,
             headers=self._request_headers,
             cookies=self._cookies,
+            proxy=self._proxy,
         ) as client:
             with make_progress(no_progress=self._no_progress, console=console) as progress:
                 task = progress.add_task(

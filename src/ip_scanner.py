@@ -170,7 +170,7 @@ class IPScanner:
         for c in c_classes:
             parts = c.split(".")
             if len(parts) == 3:
-                b = f"{parts[0]}.{parts[1]}.0.0/16"
+                b = f"{parts[0]}.{parts[1]}"
                 b_class_counter[b] += 1
         
         # 只要有 >= 1 个 C段 也可以算作拥有该 B 段的子网，这里放宽条件提取所有涉及的 B 段

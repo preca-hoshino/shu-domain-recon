@@ -104,6 +104,8 @@ class DNSBruteForcer:
         self._wildcard_ips: set[str] = set()
         self._results: set[str] = set()
         self._resolver_cycle = 0
+        self._is_fake_ip = False
+        self._is_dynamic_wildcard = False
         # 解析到脏 IP 但未被确认丢弃的域名（待 Simhash 内容验证）
         self._suspicious: set[str] = set()
 
@@ -122,10 +124,22 @@ class DNSBruteForcer:
 
         # 2. 泛解析检测
         await self._detect_wildcard()
+        if self._is_fake_ip:
+            console.print("[bold red][!] 检测到 Fake-IP 代理劫持 (如 Clash/Surge)。")
+            console.print("[bold red][!] Fake-IP 会导致所有 DNS 查询均返回假 IP，DNS 爆破无法进行！")
+            console.print("[bold red][!] 请关闭代理软件的 Fake-IP 功能，或在纯净网络环境下运行。")
+            return []
+            
+        if self._is_dynamic_wildcard:
+            console.print("[bold red][!] 检测到动态泛解析 (每次请求返回不同 IP)。")
+            console.print("[bold red][!] 动态泛解析会防御基于 IP 过滤的 DNS 爆破，产生巨量误报。")
+            console.print("[bold yellow][!] 已自动跳过 DNS 爆破阶段，将依赖被动信息收集。")
+            return []
+
         if self._wildcard_ips:
             console.print(
-                f"[yellow][DNS爆破] 检测到泛解析 (Wildcard DNS)，脏 IP: "
-                f"{', '.join(self._wildcard_ips)}，将自动过滤误报"
+                f"[yellow][DNS爆破] 检测到泛解析 (Wildcard DNS)，脏 IP 数量: "
+                f"{len(self._wildcard_ips)}，将自动过滤误报"
             )
 
         # 3. 第一轮：基础字典爆破
@@ -266,17 +280,50 @@ class DNSBruteForcer:
         return aiodns.DNSResolver(nameservers=self.resolvers)
 
     async def _detect_wildcard(self) -> None:
-        """随机生成 3 个垃圾子域，若任何一个解析成功则判定为泛解析。"""
+        """随机生成多个垃圾子域，若解析成功则判定为泛解析。
+        同时检测 Fake-IP 代理（如 Clash）和动态泛解析防御。"""
         console.log("[DNS爆破] 检测泛解析 (Wildcard DNS)...")
         resolver = self._make_resolver()
-        for _ in range(3):
-            fake = f"{_random_subdomain()}.{self.domain}"
+        
+        test_domains = [f"{_random_subdomain()}.{self.domain}" for _ in range(10)]
+        
+        async def _query_fake(domain: str) -> list[str]:
             try:
-                result = await resolver.query(fake, "A")
-                for record in result:
-                    self._wildcard_ips.add(record.host)
+                result = await resolver.query(domain, "A")
+                return [r.host for r in result]
             except Exception:
-                pass  # 解析失败 = 正常，不存在泛解析
+                return []
+                
+        results = await asyncio.gather(*[_query_fake(d) for d in test_domains])
+        
+        all_ips = set()
+        resolved_count = 0
+        for ips in results:
+            if ips:
+                resolved_count += 1
+                for ip in ips:
+                    all_ips.add(ip)
+                    
+        if resolved_count > 0:
+            import ipaddress
+            
+            # 检测是否包含 Fake-IP (198.18.0.0/15 是常见的 Fake-IP 网段)
+            fake_ip_network = ipaddress.ip_network('198.18.0.0/15')
+            for ip in all_ips:
+                try:
+                    if ipaddress.ip_address(ip) in fake_ip_network:
+                        self._is_fake_ip = True
+                        return
+                except ValueError:
+                    pass
+                    
+            # 如果查询了 10 次，返回了非常多的不同 IP（例如 > 5），则是动态泛解析
+            if len(all_ips) > 5 and resolved_count >= 5:
+                self._is_dynamic_wildcard = True
+                return
+                
+            # 静态泛解析，记录脏 IP
+            self._wildcard_ips.update(all_ips)
 
     async def _resolve(self, resolver: aiodns.DNSResolver, word: str) -> None:
         """解析单个子域名，泛解析 IP 完全匹配时丢弃；

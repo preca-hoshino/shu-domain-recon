@@ -185,11 +185,18 @@ class RecursiveBruter:
 
             for parent in targets:
                 # 泛解析检测
-                wildcard_ips = await self._detect_wildcard(resolver, parent)
+                is_fake_ip, is_dynamic, wildcard_ips = await self._detect_wildcard(resolver, parent)
+                if is_fake_ip:
+                    console.print(f"[bold red][递归爆破] {parent} 触发 Fake-IP 劫持，跳过[/]")
+                    continue
+                if is_dynamic:
+                    console.print(f"[bold red][递归爆破] {parent} 存在动态泛解析防御，跳过[/]")
+                    continue
+
                 if wildcard_ips:
                     console.print(
-                        f"[yellow][递归爆破] {parent} 存在泛解析，脏 IP: "
-                        f"{', '.join(wildcard_ips)}，进行内容感知过滤[/]"
+                        f"[yellow][递归爆破] {parent} 存在泛解析，脏 IP 数量: "
+                        f"{len(wildcard_ips)}，将自动过滤误报[/]"
                     )
 
                 # 爆破
@@ -224,18 +231,40 @@ class RecursiveBruter:
 
     async def _detect_wildcard(
         self, resolver: aiodns.DNSResolver, parent_domain: str
-    ) -> set[str]:
-        """对 parent_domain 进行泛解析检测，返回脏 IP 集合。"""
+    ) -> tuple[bool, bool, set[str]]:
+        """对 parent_domain 进行泛解析检测，返回 (是否 Fake-IP, 是否动态泛解析, 脏 IP 集合)。"""
         dirty_ips: set[str] = set()
-        for _ in range(2):
-            fake = f"{_random_str()}.{parent_domain}"
+        test_domains = [f"{_random_str()}.{parent_domain}" for _ in range(5)]
+        
+        async def _query_fake(domain: str) -> list[str]:
             try:
-                result = await resolver.query(fake, "A")
-                for r in result:
-                    dirty_ips.add(r.host)
+                result = await resolver.query(domain, "A")
+                return [r.host for r in result]
             except Exception:
-                pass
-        return dirty_ips
+                return []
+                
+        results = await asyncio.gather(*[_query_fake(d) for d in test_domains])
+        resolved_count = 0
+        for ips in results:
+            if ips:
+                resolved_count += 1
+                for ip in ips:
+                    dirty_ips.add(ip)
+                    
+        if resolved_count > 0:
+            import ipaddress
+            fake_ip_network = ipaddress.ip_network('198.18.0.0/15')
+            for ip in dirty_ips:
+                try:
+                    if ipaddress.ip_address(ip) in fake_ip_network:
+                        return True, False, set()
+                except ValueError:
+                    pass
+            
+            if len(dirty_ips) > 3 and resolved_count >= 3:
+                return False, True, set()
+                
+        return False, False, dirty_ips
 
     async def _brute_under(
         self,

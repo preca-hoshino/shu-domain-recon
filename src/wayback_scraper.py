@@ -40,9 +40,10 @@ class WaybackScraper:
 
     TIMEOUT = 60  # CDX API 响应慢，需要更长超时
 
-    def __init__(self, domain: str) -> None:
+    def __init__(self, domain: str, proxy: str | None = None) -> None:
         self.domain = domain.lower().strip()
         self._results: set[str] = set()
+        self._proxy = proxy
         # 用于快速匹配目标子域名的正则
         self._pattern = re.compile(
             r"([a-zA-Z0-9][a-zA-Z0-9.-]*\." + re.escape(self.domain) + r")",
@@ -63,6 +64,7 @@ class WaybackScraper:
             follow_redirects=True,
             verify=False,
             headers=headers,
+            proxy=self._proxy,
         ) as client:
             await self._query_cdx(client)
 

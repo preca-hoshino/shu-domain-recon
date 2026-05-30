@@ -34,10 +34,11 @@ class SubdomainEnumerator:
 
     TIMEOUT = 25  # 秒，部分慢源需要更长时间
 
-    def __init__(self, domain: str, no_progress: bool = False) -> None:
+    def __init__(self, domain: str, no_progress: bool = False, proxy: str | None = None) -> None:
         self.domain = domain.lower().strip()
         self._results: set[str] = set()
         self._no_progress = no_progress
+        self._proxy = proxy
 
 
     # ── 公共入口 ───────────────────────────────────────────────
@@ -51,7 +52,8 @@ class SubdomainEnumerator:
 
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
             async with httpx.AsyncClient(
-                timeout=self.TIMEOUT, follow_redirects=True, verify=False, headers=headers
+                timeout=self.TIMEOUT, follow_redirects=True, verify=False, headers=headers,
+                proxy=self._proxy,
             ) as client:
                 await asyncio.gather(
                     self._query_crtsh(client),
@@ -68,7 +70,7 @@ class SubdomainEnumerator:
         console.rule("[bold cyan]Wayback Machine 历史快照提取")
         try:
             from src.wayback_scraper import WaybackScraper
-            wayback = WaybackScraper(self.domain)
+            wayback = WaybackScraper(self.domain, proxy=self._proxy)
             wayback_results = await wayback.run()
             before = len(self._results)
             for d in wayback_results:

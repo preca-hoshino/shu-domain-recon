@@ -18,7 +18,9 @@ domain-recon  —  上海大学域名侦察工具
 
 认证及过滤选项:
   --curl curl.cmd               直接加载 Chrome DevTools 导出的 curl.cmd 文件，自动提取请求头和 Cookie
-  --blacklist blacklist.txt     黑名单域名文件，包含在内的域名将被跳过
+  --blacklist blacklist.txt     黑名单文件（支持域名或URL），匹配的域名及其子域名将被跳过
+  --whitelist whitelist.txt     白名单文件（支持域名或URL），域名强制探测，URL页面内容会被抓取提取子域名
+  --proxy http://127.0.0.1:10809  HTTP/HTTPS 代理地址（仅 httpx 请求走代理，DNS/TLS 直连不走）
 
 并发量分配比例:
   DNS 字典爆破  (aiodns)  = max_concurrency        (轻量 UDP，可高并发)
@@ -32,9 +34,12 @@ domain-recon  —  上海大学域名侦察工具
   python run.py shu.edu.cn 200 --skip-passive --skip-js
   python run.py shu.edu.cn 300 --curl curl.cmd
   python run.py shu.edu.cn 300 --blacklist blacklist.txt
+  python run.py shu.edu.cn 300 --whitelist whitelist.txt
+  python run.py shu.edu.cn 300 --proxy http://127.0.0.1:10809
 
 流程:
-  被动枚举(7源+Wayback+GitHub) → DNS字典爆破(含AXFR检测+变异爆破+Simhash过滤) → 多级递归爆破 → 合并去重
+  被动枚举 ∥ DNS字典爆破 ∥ 白名单URL抓取（三者并行）
+  → 合并去重 → 多级递归爆破
   → HTTP探活(含CSP/CORS精化提取+JS/SourceMap深度分析)
   → IP空间扫描(PTR反查 + TLS证书SAN提取)
   → 输出报告 (TXT / CSV / JSON + 终端表格)
@@ -43,8 +48,10 @@ domain-recon  —  上海大学域名侦察工具
 import argparse
 import asyncio
 import io
+import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Windows 终端默认 GBK，强制改为 UTF-8 以支持中文和特殊字符
 if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
@@ -74,6 +81,8 @@ def _parse_args() -> argparse.Namespace:
             "  python run.py shu.edu.cn 500\n"
             "  python run.py shu.edu.cn 300 --skip-brute --skip-ip-scan\n"
             "  python run.py shu.edu.cn 300 --curl curl.cmd --blacklist blacklist.txt\n"
+            "  python run.py shu.edu.cn 300 --whitelist whitelist.txt\n"
+            "  python run.py shu.edu.cn 300 --proxy http://127.0.0.1:10809\n"
         ),
     )
     parser.add_argument("domain",       metavar="目标域名",   help="例: shu.edu.cn")
@@ -98,6 +107,20 @@ def _parse_args() -> argparse.Namespace:
         metavar="BLACKLIST_FILE",
         default="",
         help="黑名单域名文件路径（每行一个），匹配的域名及其子域名将被跳过",
+    )
+    parser.add_argument(
+        "--whitelist",
+        metavar="WHITELIST_FILE",
+        default="",
+        help="白名单域名文件路径（每行一个），白名单域名强制解析并探测，且不会被黑名单过滤。"
+             "其解析 IP 还会用于 PTR 反查和 TLS 证书扫描以发现更多关联域名",
+    )
+    parser.add_argument(
+        "--proxy",
+        metavar="PROXY_URL",
+        default="",
+        help="HTTP/HTTPS 代理地址（仅对 HTTP 请求生效，DNS/TLS 直连不受影响）。"
+             "例如: http://127.0.0.1:10809 或 socks5://127.0.0.1:10808",
     )
     parser.add_argument(
         "--md-only",
@@ -186,6 +209,12 @@ def _print_banner(domain: str, concurrency: int, args: argparse.Namespace) -> No
     if args.blacklist:
         c.print(f"[bold green][✓] 黑名单文件已指定[/] — {args.blacklist}")
 
+    if args.whitelist:
+        c.print(f"[bold green][✓] 白名单文件已指定[/] — {args.whitelist}")
+
+    if args.proxy:
+        c.print(f"[bold green][✓] HTTP 代理已设置[/] — {args.proxy}")
+
 
 async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> None:
     from rich.console import Console
@@ -200,8 +229,25 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
         except Exception:
             pass  # 错误已在 banner 阶段提示
 
+    # 代理设置（仅 httpx 请求生效，DNS/TLS 直连不受影响）
+    proxy: str | None = args.proxy if args.proxy else None
+
+    # ── 辅助函数：从黑白名单条目中提取纯域名 ─────────────────────
+    def _domain_from_entry(entry: str) -> str:
+        """
+        从黑白名单条目中提取纯域名。
+        支持: 纯域名 (vpn.shu.edu.cn) 或 完整 URL (https://vpn.shu.edu.cn/login)
+        返回: 域名字符串，不含协议和路径
+        """
+        entry = entry.strip().lower()
+        if entry.startswith("http://") or entry.startswith("https://"):
+            parsed = urlparse(entry)
+            return parsed.netloc.lower()
+        return entry
+
     # 解析黑名单
     blacklist: set[str] = set()
+    blacklist_domains: set[str] = set()  # 提取出的纯域名，用于快速匹配
     if args.blacklist:
         try:
             blacklist_path = Path(args.blacklist)
@@ -210,14 +256,35 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
                     line = line.strip().lower()
                     if line and not line.startswith("#"):
                         blacklist.add(line)
+                        blacklist_domains.add(_domain_from_entry(line))
         except Exception as e:
             c.print(f"[yellow][!] 读取黑名单失败: {e}[/]")
 
+    # 解析白名单
+    whitelist: set[str] = set()
+    whitelist_domains: set[str] = set()  # 提取出的纯域名
+    if args.whitelist:
+        try:
+            whitelist_path = Path(args.whitelist)
+            if whitelist_path.exists():
+                for line in whitelist_path.read_text(encoding="utf-8").splitlines():
+                    line = line.strip().lower()
+                    if line and not line.startswith("#"):
+                        whitelist.add(line)
+                        whitelist_domains.add(_domain_from_entry(line))
+                c.print(f"[cyan][→] 白名单已加载 [yellow]{len(whitelist)}[/] 个条目")
+        except Exception as e:
+            c.print(f"[yellow][!] 读取白名单失败: {e}[/]")
+
     def is_blacklisted(d: str) -> bool:
+        """判断域名是否在黑名单中（白名单域名不受黑名单约束）。"""
         if not blacklist:
             return False
-        for b in blacklist:
-            if d == b or d.endswith("." + b):
+        # 白名单域名不受黑名单约束（精确匹配）
+        if d in whitelist_domains:
+            return False
+        for bd in blacklist_domains:
+            if d == bd or d.endswith("." + bd):
                 return True
         return False
 
@@ -231,32 +298,139 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
     domain_output_dir = OUTPUT_DIR / domain
     domain_output_dir.mkdir(parents=True, exist_ok=True)
 
+    # ── 阶段 1+2: 并行初始发现 ─────────────────────────────────
+    # 被动枚举、DNS 爆破、白名单 URL 抓取三者完全独立，并行执行。
+    #
+    # 每项任务封装为闭包，内部自行 try/except 以保证单个失败不影响其他任务。
+    # 最终在合并点统一汇入。
+
     passive_domains: list[str] = []
     brute_domains:   list[str] = []
+    whitelist_extracted: set[str] = set()
 
-    # ── 阶段 1: 被动枚举 ─────────────────────────────────────────
+    # 预计算白名单 URL 集（用于并发控制和条件判断）
+    whitelist_urls = {w for w in whitelist if w.startswith("http://") or w.startswith("https://")} if whitelist else set()
+
+    async def _task_passive() -> None:
+        """被动枚举子任务。"""
+        if args.skip_passive:
+            return
+        nonlocal passive_domains
+        try:
+            enumerator = SubdomainEnumerator(domain, no_progress=args.no_progress, proxy=proxy)
+            passive_domains = await enumerator.run()
+        except Exception as e:
+            c.print(f"[red][✗] 被动枚举异常: {e}[/]")
+
+    async def _task_brute() -> None:
+        """DNS 字典爆破子任务。"""
+        if args.skip_brute:
+            return
+        nonlocal brute_domains
+        try:
+            bruteforcer = DNSBruteForcer(domain=domain, concurrency=brute_concurrency, no_progress=args.no_progress)
+            brute_domains = await bruteforcer.run()
+        except Exception as e:
+            c.print(f"[red][✗] DNS 字典爆破异常: {e}[/]")
+
+    async def _task_whitelist_fetch() -> None:
+        """白名单 URL 内容抓取子任务。"""
+        if not whitelist_urls:
+            return
+        nonlocal whitelist_extracted
+        try:
+            import httpx
+            from src.prober import _extract_domains_sync
+
+            _domain_regex = re.compile(
+                r"([a-zA-Z0-9][a-zA-Z0-9.-]*\." + re.escape(domain) + r")",
+                re.IGNORECASE,
+            )
+            sem = asyncio.Semaphore(max(5, max_concurrency // 10))
+            _extracted: set[str] = set()
+
+            async def _fetch_one(url: str) -> None:
+                async with sem:
+                    try:
+                        async with httpx.AsyncClient(
+                            timeout=15, follow_redirects=True, verify=False,
+                            proxy=proxy,
+                            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"}
+                        ) as client:
+                            resp = await client.get(url)
+                            if resp.status_code < 500:
+                                raw = resp.content[:1024 * 1024]
+                                text = raw.decode("utf-8", errors="ignore")
+                                loop = asyncio.get_running_loop()
+                                found = await loop.run_in_executor(
+                                    None,
+                                    lambda t=text: set(_domain_regex.findall(t))
+                                )
+                                for d in found:
+                                    _extracted.add(d)
+                                console.log(
+                                    f"[cyan][白名单URL] {url} → 提取 {len(found)} 个子域名[/]"
+                                )
+                            else:
+                                console.log(f"[yellow][白名单URL] {url} HTTP {resp.status_code}[/]")
+                    except Exception as e:
+                        console.log(f"[yellow][白名单URL] {url} 请求失败: {e}[/]")
+
+            await asyncio.gather(
+                *[_fetch_one(u) for u in whitelist_urls], return_exceptions=True
+            )
+
+            # 提取后立即黑名单过滤
+            whitelist_extracted = {d for d in _extracted if not is_blacklisted(d)}
+        except Exception as e:
+            c.print(f"[red][✗] 白名单 URL 抓取异常: {e}[/]")
+
+    # ── 并行发射 ──────────────────────────────────────────────
+    tasks = [
+        _task_passive(),
+        _task_brute(),
+        _task_whitelist_fetch(),
+    ]
+
+    if whitelist_urls:
+        c.rule("[bold cyan]并行初始发现 (被动枚举 ∥ DNS爆破 ∥ 白名单URL抓取)")
+
+    await asyncio.gather(*tasks)
+
+    # 阶段一：被动枚举日志
     if not args.skip_passive:
-        enumerator = SubdomainEnumerator(domain, no_progress=args.no_progress)
-        passive_domains = await enumerator.run()
         c.print(f"[bold green][✓] 被动枚举完成[/] — 共发现 [yellow]{len(passive_domains)}[/] 个子域名")
     else:
         c.print("[dim][→] 被动枚举已跳过[/]")
 
-    # ── 阶段 2: 主动 DNS 字典爆破（含 AXFR 检测 + 变异爆破）──────
+    # 阶段二：DNS 字典爆破日志
     if not args.skip_brute:
-        bruteforcer = DNSBruteForcer(domain=domain, concurrency=brute_concurrency, no_progress=args.no_progress)
-        brute_domains = await bruteforcer.run()
+        c.print(f"[bold green][✓] DNS 字典爆破完成[/] — 共发现 [yellow]{len(brute_domains)}[/] 个子域名")
     else:
         c.print("[dim][→] DNS 字典爆破已跳过[/]")
 
-    # ── 阶段 3: 合并去重，保存子域名列表 ─────────────────────────
-    merged_set = set(passive_domains) | set(brute_domains)
+    # 阶段三：白名单 URL 抓取日志
+    if whitelist_urls:
+        c.print(f"[bold green][✓] 白名单 URL 解析完成[/] — 共提取 [yellow]{len(whitelist_extracted)}[/] 个子域名")
+
+    # ── 合并去重 ─────────────────────────────────────────────
+    merged_set = set(passive_domains) | set(brute_domains) | whitelist_extracted
     if blacklist:
         original_count = len(merged_set)
         merged_set = {d for d in merged_set if not is_blacklisted(d)}
         filtered_count = original_count - len(merged_set)
         if filtered_count > 0:
             c.print(f"[dim][→] 根据黑名单过滤了 {filtered_count} 个已知域名[/]")
+
+    # 白名单域名强制加入（保证一定被探测）
+    if whitelist_domains:
+        whitelist_added = 0
+        for wd in whitelist_domains:
+            if wd not in merged_set:
+                merged_set.add(wd)
+                whitelist_added += 1
+        if whitelist_added > 0:
+            c.print(f"[cyan][→] 白名单强制加入 [yellow]{whitelist_added}[/] 个域名[/]")
 
     merged = sorted(merged_set)
     enum_file = domain_output_dir / "subdomains.txt"
@@ -311,6 +485,7 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
             extra_headers=extra_headers,
             cookies=cookies,
             no_progress=args.no_progress,
+            proxy=proxy,
         )
 
         # 尝试加载历史探活结果，避免重复扫描导致 IP 被封
@@ -387,6 +562,43 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
             for r in all_results
             if r.alive and r.ip and r.ip != "-"
         }
+
+        # 白名单域名 DNS 解析：强制解析白名单域名获取 IP，用于 PTR/TLS 扫描发现关联域名
+        if whitelist_domains:
+            c.rule("[bold cyan]白名单域名 DNS 解析")
+            import aiodns
+            whitelist_resolved: dict[str, str] = {}
+            whitelist_dns_resolver = aiodns.DNSResolver(
+                nameservers=["8.8.8.8", "223.5.5.5", "119.29.29.29"]
+            )
+            sem = asyncio.Semaphore(ptr_concurrency)
+
+            async def _resolve_whitelist(host: str) -> None:
+                async with sem:
+                    try:
+                        result = await whitelist_dns_resolver.query(host, "A")
+                        for record in result:
+                            ip = str(record.host)
+                            whitelist_resolved[host] = ip
+                            console.log(f"[cyan][白名单] {host} → {ip}[/]")
+                            break  # 只取第一个 IP
+                    except Exception:
+                        console.log(f"[yellow][白名单] {host} 解析失败[/]")
+
+            await asyncio.gather(
+                *[_resolve_whitelist(w) for w in whitelist_domains], return_exceptions=True
+            )
+
+            if whitelist_resolved:
+                c.print(
+                    f"[cyan][→] 白名单成功解析 [yellow]{len(whitelist_resolved)}[/] 个域名，"
+                    f"其 IP 将纳入 PTR/TLS 扫描[/]"
+                )
+                # 将白名单解析 IP 合并到 domain_ip_map
+                for w_host, w_ip in whitelist_resolved.items():
+                    if w_host not in domain_ip_map:
+                        domain_ip_map[w_host] = w_ip
+
         if domain_ip_map:
             ip_scanner = IPScanner(
                 base_domain=domain,
@@ -404,10 +616,11 @@ async def main(domain: str, max_concurrency: int, args: argparse.Namespace) -> N
                 ip_ranges_file = domain_output_dir / "inferred_ip_ranges.txt"
                 with ip_ranges_file.open("w", encoding="utf-8") as f:
                     f.write("=== Inferred B-Classes (/16) ===\n")
-                    f.write("\n".join(sorted(ip_scanner.target_b_classes)))
+                    for b_network in sorted(ip_scanner.target_b_classes):
+                        f.write(f"{b_network}.0.0/16\n")
                     f.write("\n\n=== Inferred C-Classes (/24) ===\n")
-                    for c in sorted(ip_scanner.target_c_classes):
-                        f.write(f"{c}.0/24\n")
+                    for c_network in sorted(ip_scanner.target_c_classes):
+                        f.write(f"{c_network}.0/24\n")
                 c.print(f"[cyan][→] 已将推断出的网段保存至: {ip_ranges_file}[/]")
 
             # 将 IP 扫描发现的新域名加入待探活队列

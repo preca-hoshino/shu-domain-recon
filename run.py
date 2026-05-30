@@ -23,6 +23,7 @@ if __name__ == "__main__":
         import traceback
         with open("error_trace.txt", "w") as f:
             traceback.print_exc(file=f)
+        traceback.print_exc()
 
     finally:
         from src.prober import force_shutdown_process_pool
