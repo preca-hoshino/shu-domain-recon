@@ -1,0 +1,14 @@
+# 上海大学域名侦察 白名单配置
+# 匹配规则：纯域名或完整URL均支持，URL中的页面内容会被抓取以提取更多子域名
+#
+# 纯域名（精确匹配，强制加入探测队列，IP用于PTR反查/TLS扫描）：
+#   lib.shu.edu.cn
+#   idp.shu.edu.cn
+#
+# 完整URL（抓取页面内容，从中提取子域名，域名本身也强制探测）：
+#   https://lib.shu.edu.cn/resources
+#   https://www.shu.edu.cn/sitemap
+#
+# 每行一个条目，# 开头为注释
+
+https://www.shu.edu.cn/yxsz.htm

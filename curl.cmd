@@ -1,0 +1,18 @@
+curl ^"https://newsso.shu.edu.cn/^" ^
+  -H ^"accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7^" ^
+  -H ^"accept-language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6^" ^
+  -H ^"cache-control: max-age=0^" ^
+  -b ^"uname=25123368; fid=209; xxtenc=0caf95e66b17544a6e50efb7f45ad507; source=^\^"^\^"; _webvpn_key=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiMjUxMjMzNjgiLCJncm91cHMiOls3XSwiaWF0IjoxNzc3MDkxNDIyLCJleHAiOjE3NzcxNzc4MjJ9.5CWmVJTlE0luTgE52m4fOfC_PXrVDbdxK4eV93b1b50; webvpn_username=25123368^%^7C1777091422^%^7C40dc8f48eaa54e2d18acf140da91f846db780036; 209userinfo=30cfb40d9fa2a06ff60a5cbf3b6e73f4c49d67c0c30ca5047c5a963e85f110999867422a269337976f38cb958cf75533dd5a7badcb182e89aa2ebad65cd196bb; 209UID=404270468; 209enc=36E71E4E1135F53EA0EAF4C3F1A8A0B8; _uid=404270468; _d=1777598345136; UID=404270468; vc3=fQa4HiQbjVNvt97LQfjXH0HQhFMx4YXCKG9rjW2h2p^%^2BxZ5yqZXMqoQY^%^2FpnavjGc2GJXW^%^2BH4CzMs6HIJhpKVtsArWnalISxbWx5lGTomtW9UgqbBSq9VyLJ781TkFXdQrUdXoZJO0KqYtuERUeJ7VmQ^%^2FyZNS3XzX^%^2BnyIjWBPEE4Q^%^3D83f3c1a931f7113113e2c0bb2ba2a036; uf=da0883eb5260151e9d69e81382fc2bd4988c56aa83d4c0a23c5516fee57aa6d4822ab309625ed5892ad7a5da8b9c23785d984d23a7662dfb9b0594e13f4b452fa995cca83579031aa94b593de5d847e45172d9db5bbfe9ebe5851b744f8aa02c9fb3947ed09a594c3ec9d97a0d44723fa2a9abd4b32f3a53f87e2473673e894a718051e4789b0228b460e7801bf7675e70b5a05e402d2a6370184964ffe8c27c7d404c267e8c0614a62055e48b0e8988b1f899d50c1c3fa3aa2ebad65cd196bb; cx_p_token=04cb56263380fc855c15e3ad4f7394c4; p_auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI0MDQyNzA0NjgiLCJsb2dpblRpbWUiOjE3Nzc1OTgzNDUxMzksImV4cCI6MTc3ODIwMzE0NX0.e76sPnut0nY4AOa5a6mpV0GfpmzJ3VwZgrjCL0tGPIA; DSSTASH_LOG=C_38-UN_2434-US_404270468-T_1777598345139; fanyamoocs=20B0D1E37AE18E573606855810916A7B; SHU_OAUTH2=KNEWLWT6G5V55AWSJDOWK7FERT2UVEUTWWEZ2NOF6IYG2NMLQVKDBS4QHLFBB6T6EB5KB3OKYECGO2U7RAJVUHH62F7EJOHTCPDIVSA; _dd404270468=1778080245072^" ^
+  -H ^"dnt: 1^" ^
+  -H ^"if-modified-since: Tue, 07 Apr 2026 04:06:27 GMT^" ^
+  -H ^"if-none-match: ^\^"69d482c3-2bd^\^"^" ^
+  -H ^"priority: u=0, i^" ^
+  -H ^"sec-ch-ua: ^\^"Microsoft Edge^\^";v=^\^"147^\^", ^\^"Not.A/Brand^\^";v=^\^"8^\^", ^\^"Chromium^\^";v=^\^"147^\^"^" ^
+  -H ^"sec-ch-ua-mobile: ?0^" ^
+  -H ^"sec-ch-ua-platform: ^\^"Windows^\^"^" ^
+  -H ^"sec-fetch-dest: document^" ^
+  -H ^"sec-fetch-mode: navigate^" ^
+  -H ^"sec-fetch-site: same-origin^" ^
+  -H ^"sec-fetch-user: ?1^" ^
+  -H ^"upgrade-insecure-requests: 1^" ^
+  -H ^"user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36^"
