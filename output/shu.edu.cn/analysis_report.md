@@ -1,6 +1,6 @@
 **子域名探测分析**
 
-域名数量：214/353
+域名数量：217/353
 
 | 状态 | 域名 / URL | 标题 | 技术栈 | IP |
 | :---: | :--- | :--- | :--- | :--- |
@@ -55,7 +55,7 @@
 | 200 | [gczx.shu.edu.cn](https://gczx.shu.edu.cn) | 上海大学工程技术训练中心 | - | 202.120.114.98 |
 | 200 | [gh.shu.edu.cn](https://gh.shu.edu.cn) | 上海大学工会 | - | 202.120.114.98 |
 | 200 | 🔒 [ghxt.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiI2T2kwcWprbU9aQlMxUUxKbklvbUpsejYiLCJjbGllbnROYW1lIjoi5bel5Lya57O757ufIiwic2NvcGUiOiIxIiwicmVkaXJlY3RVcmkiOiJodHRwczovL2doeHQuc2h1LmVkdS5jbi9Mb2dpblNTTy5hc3B4Iiwic3RhdGUiOiIifQ==) | 上海大学统一身份认证 | nginx | 202.120.117.29 |
-| 200 | [giving.shu.edu.cn](https://giving.shu.edu.cn/index.action?1786746096590) | 上海大学教育发展基金会 | Vue.js | 202.120.114.97 |
+| 200 | [giving.shu.edu.cn](https://giving.shu.edu.cn/index.action?1786832420346) | 上海大学教育发展基金会 | Vue.js | 202.120.114.97 |
 | 200 | [global.shu.edu.cn](https://global.shu.edu.cn) | 上海大学国际部中文网站 | Vue.js | 202.120.114.98 |
 | 200 | [gs.shu.edu.cn](https://gs.shu.edu.cn) | 上海大学研究生院 | - | 202.120.114.98 |
 | 200 | [gzc.shu.edu.cn](https://gzc.shu.edu.cn) | 上海大学国有资产管理办公室 | - | 202.120.114.98 |
@@ -92,7 +92,7 @@
 | 200 | [mbio.shu.edu.cn](https://mbio.shu.edu.cn) | 上海大学材料生物学研究所 | Vue.js | 202.120.114.98 |
 | 200 | [mec.shu.edu.cn](https://mec.shu.edu.cn) | 上海大学微电子研究与开发中心 | - | 202.120.114.98 |
 | 200 | [metc.shu.edu.cn](https://metc.shu.edu.cn) | 上海大学现代教育技术中心 | - | 202.120.114.98 |
-| 200 | [moa.shu.edu.cn](http://moa.shu.edu.cn/manage/dept/user/login/show) | 管理员登录 | - | 140.210.72.168 |
+| 200 | [moa.shu.edu.cn](http://moa.shu.edu.cn/manage/dept/user/login/show) | 管理员登录 | - | 140.210.72.160 |
 | 200 | [museum.shu.edu.cn](https://museum.shu.edu.cn) | 上海大学博物馆 | - | 202.120.114.98 |
 | 200 | [nano.shu.edu.cn](https://nano.shu.edu.cn) | 上海大学纳米科学与技术研究中心网站 | - | 202.120.114.98 |
 | 200 | [newits.shu.edu.cn](https://newits.shu.edu.cn) | 上海大学信息化工作办公室 | Vue.js | 202.120.114.98 |
@@ -100,10 +100,10 @@
 | 200 | [news.shu.edu.cn](https://news.shu.edu.cn) | 上海大学新闻网 | - | 202.120.114.98 |
 | 200 | 🔒 [newsso.shu.edu.cn](https://newsso.shu.edu.cn) | 上海大学统一身份认证 | nginx | 202.120.114.117 |
 | 200 | 🔒 [oauth.shu.edu.cn](https://oauth.shu.edu.cn) | 上海大学统一身份认证 | nginx | 202.120.114.117 |
-| 200 | [office.shu.edu.cn](https://www.cxlowcode.com) | 首页 | - | 140.210.72.168 |
+| 200 | [office.shu.edu.cn](https://www.cxlowcode.com) | 首页 | - | 140.210.72.170 |
 | 200 | [oiqa.shu.edu.cn](https://oiqa.shu.edu.cn) | 上海大学教学评估处 | Vue.js | 202.120.114.98 |
 | 200 | [physics.shu.edu.cn](https://physics.shu.edu.cn) | 上海大学理学院物理系 | Vue.js | 202.120.114.98 |
-| 200 | 🔒 [pim.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJSVlYxbVpqbW54a3BZWVU4OUNpMXN0cHAiLCJjbGllbnROYW1lIjoiUElN5rWB56iL566h55CG57O757ufIiwic2NvcGUiOiIiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vcGltLnNodS5lZHUuY24vc3NvL2xvZ2luP3JlZGlyZWN0X3VyaT1odHRwcyUzQSUyRiUyRnBpbS5zaHUuZWR1LmNuJTJGc3NvJTJGb2F1dGgyJTJGYXV0aG9yaXplJTNGc2NvcGUlM0RvcGVuaWQlMjZyZXNwb25zZV90eXBlJTNEY29kZSUyNnJlZGlyZWN0X3VyaSUzRGh0dHBzJTI1M0ElMjUyRiUyNTJGcGltLnNodS5lZHUuY24lMjUyRmluZm9wbHVzJTI1MkZsb2dpbiUyNTNGcmV0VXJsJTI1M0RodHRwcyUyNTI1M0ElMjUyNTJGJTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyRmluZm9wbHVzJTI1MjUyRm9hdXRoMiUyNTI1MkZhdXRob3JpemUlMjUyNTNGeF9yZWRpcmVjdGVkJTI1MjUzRHRydWUlMjUyNTI2c2NvcGUlMjUyNTNEcHJvZmlsZSUyNTI1MkJwcm9maWxlX2VkaXQlMjUyNTJCYXBwJTI1MjUyQnRhc2slMjUyNTJCdGFza19lZGl0JTI1MjUyQnByb2Nlc3MlMjUyNTJCcHJvY2Vzc19lZGl0JTI1MjUyQnN1Ym1pdCUyNTI1MkJ0cmlwbGVfZWRpdCUyNTI1MkJ0cmlwbGUlMjUyNTJCc3RhdHMlMjUyNTJCc3lzX3Byb2ZpbGUlMjUyNTJCc3lzX2VudGVycHJpc2UlMjUyNTJCc3lzX3RyaXBsZSUyNTI1MkJzeXNfc3RhdHMlMjUyNTJCc3lzX2VudHJ1c3QlMjUyNTJCc3lzX2VudHJ1c3RfZWRpdCUyNTI1MkJzeXNfYXBwJTI1MjUyNnJlc3BvbnNlX3R5cGUlMjUyNTNEY29kZSUyNTI1MjZyZWRpcmVjdF91cmklMjUyNTNEaHR0cHMlMjUyNTI1M0ElMjUyNTI1MkYlMjUyNTI1MkZwaW0uc2h1LmVkdS5jbiUyNTI1MjUyRnRhc2tjZW50ZXIlMjUyNTI1MkZ3YWxsJTI1MjUyNTJGZW5kcG9pbnQlMjUyNTI1M0ZyZXRVcmwlMjUyNTI1M0RodHRwcyUyNTI1MjUyNTNBJTI1MjUyNTI1MkYlMjUyNTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyNTI1MkZ0YXNrY2VudGVyJTI1MjUyNTI1MkZ3b3JrZmxvdyUyNTI1MjUyNTJGaW5kZXglMjUyNTI2Y2xpZW50X2lkJTI1MjUzRDE2NDBlMmU0LWYyMTMtMTFlMy04MTVkLWZhMTYzZTkyMTViYiUyNnN0YXRlJTNEZGQ5MmQyJTI2Y2xpZW50X2lkJTNEb0tadHhQaURPV1loSWw1MFVOWVMiLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.132 |
+| 200 | 🔒 [pim.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJSVlYxbVpqbW54a3BZWVU4OUNpMXN0cHAiLCJjbGllbnROYW1lIjoiUElN5rWB56iL566h55CG57O757ufIiwic2NvcGUiOiIiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vcGltLnNodS5lZHUuY24vc3NvL2xvZ2luP3JlZGlyZWN0X3VyaT1odHRwcyUzQSUyRiUyRnBpbS5zaHUuZWR1LmNuJTJGc3NvJTJGb2F1dGgyJTJGYXV0aG9yaXplJTNGc2NvcGUlM0RvcGVuaWQlMjZyZXNwb25zZV90eXBlJTNEY29kZSUyNnJlZGlyZWN0X3VyaSUzRGh0dHBzJTI1M0ElMjUyRiUyNTJGcGltLnNodS5lZHUuY24lMjUyRmluZm9wbHVzJTI1MkZsb2dpbiUyNTNGcmV0VXJsJTI1M0RodHRwcyUyNTI1M0ElMjUyNTJGJTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyRmluZm9wbHVzJTI1MjUyRm9hdXRoMiUyNTI1MkZhdXRob3JpemUlMjUyNTNGeF9yZWRpcmVjdGVkJTI1MjUzRHRydWUlMjUyNTI2c2NvcGUlMjUyNTNEcHJvZmlsZSUyNTI1MkJwcm9maWxlX2VkaXQlMjUyNTJCYXBwJTI1MjUyQnRhc2slMjUyNTJCdGFza19lZGl0JTI1MjUyQnByb2Nlc3MlMjUyNTJCcHJvY2Vzc19lZGl0JTI1MjUyQnN1Ym1pdCUyNTI1MkJ0cmlwbGVfZWRpdCUyNTI1MkJ0cmlwbGUlMjUyNTJCc3RhdHMlMjUyNTJCc3lzX3Byb2ZpbGUlMjUyNTJCc3lzX2VudGVycHJpc2UlMjUyNTJCc3lzX3RyaXBsZSUyNTI1MkJzeXNfc3RhdHMlMjUyNTJCc3lzX2VudHJ1c3QlMjUyNTJCc3lzX2VudHJ1c3RfZWRpdCUyNTI1MkJzeXNfYXBwJTI1MjUyNnJlc3BvbnNlX3R5cGUlMjUyNTNEY29kZSUyNTI1MjZyZWRpcmVjdF91cmklMjUyNTNEaHR0cHMlMjUyNTI1M0ElMjUyNTI1MkYlMjUyNTI1MkZwaW0uc2h1LmVkdS5jbiUyNTI1MjUyRnRhc2tjZW50ZXIlMjUyNTI1MkZ3YWxsJTI1MjUyNTJGZW5kcG9pbnQlMjUyNTI1M0ZyZXRVcmwlMjUyNTI1M0RodHRwcyUyNTI1MjUyNTNBJTI1MjUyNTI1MkYlMjUyNTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyNTI1MkZ0YXNrY2VudGVyJTI1MjUyNTI1MkZ3b3JrZmxvdyUyNTI1MjUyNTJGaW5kZXglMjUyNTI2Y2xpZW50X2lkJTI1MjUzRDE2NDBlMmU0LWYyMTMtMTFlMy04MTVkLWZhMTYzZTkyMTViYiUyNnN0YXRlJTNENjFhYTY2JTI2Y2xpZW50X2lkJTNEb0tadHhQaURPV1loSWw1MFVOWVMiLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.132 |
 | 500 | [portal.shu.edu.cn](https://portal.shu.edu.cn/index.html) | 系统异常 | wisedu | 202.120.114.161 |
 | 200 | [pv.cc.shu.edu.cn](https://pv.cc.shu.edu.cn) | 登录 - Matomo | PHP/8.0.30, nginx | 202.120.119.168 |
 | 200 | [rwskc.shu.edu.cn](https://rwskc.shu.edu.cn) | 上海大学人文社会科学处 | - | 202.120.114.98 |
@@ -135,7 +135,7 @@
 | 200 | [sociology.shu.edu.cn](https://sociology.shu.edu.cn) | 上海大学社会学院 | Vue.js | 202.120.114.98 |
 | 200 | [suns.shu.edu.cn](https://suns.shu.edu.cn) | 上海大学数据科学与都市研究中心 | Vue.js | 202.120.114.98 |
 | 200 | [sustp.shu.edu.cn](https://sustp.shu.edu.cn) | 上海大学科技园区 | Vue.js | 202.120.114.98 |
-| 200 | 🔒 [task.shu.edu.cn](https://passport2.shu.edu.cn/login?fid=&newversion=true&refer=https%3A%2F%2Ftask.shu.edu.cn%2Ferror) | 用户登录 | - | 45.113.20.50 |
+| 200 | 🔒 [task.shu.edu.cn](https://passport2.shu.edu.cn/login?fid=&newversion=true&refer=https%3A%2F%2Ftask.shu.edu.cn%2Ferror) | 用户登录 | - | 45.113.20.60 |
 | 200 | [ulisboas.shu.edu.cn](https://ulisboas.shu.edu.cn) | 上海大学中葡里斯本学院 | - | 202.120.114.98 |
 | 200 | [utseus.shu.edu.cn](https://utseus.shu.edu.cn) | 上海大学中欧工程技术学院 | - | 202.120.114.98 |
 | 200 | [vod.cc.shu.edu.cn](https://vod.cc.shu.edu.cn/notice/) | 外网访问受限  vod.cc.shu.edu.cn | nginx | 202.120.119.170 |
@@ -144,7 +144,7 @@
 | 200 | [wmzx.sdfz.shu.edu.cn](https://wmzx.sdfz.shu.edu.cn) | 上大附中文明在线 | - | 202.120.114.98 |
 | 200 | [wmzx.shu.edu.cn](https://wmzx.shu.edu.cn) | 上海大学文明校园创建 | - | 202.120.114.98 |
 | 200 | [www.cc.shu.edu.cn](https://metc.shu.edu.cn/) | 上海大学现代教育技术中心 | - | 202.120.119.170 |
-| 200 | [www.elearning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 140.210.69.130 |
+| 200 | [www.elearning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 42.62.2.150 |
 | 200 | 🔒 [www.icce.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJqWDlXc1VTbDFWTkJyNkNNX0t4S3QzWkEwVmtqX1pEbiIsImNsaWVudE5hbWUiOiLnu6fnu63mlZnogrLlrabpmaLmlZnliqHns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly93d3cuaWNjZS5zaHUuZWR1LmNuL3Bhc3Nwb3J0L3JldHVybiIsInN0YXRlIjoiIn0=) | 上海大学统一身份认证 | nginx | 202.120.115.208 |
 | 200 | [www.jpsu.shu.edu.cn](https://www.jpsu.shu.edu.cn) | 上海大学期刊社 | Vue.js | 202.120.114.98 |
 | 200 | [www.puzzle.shu.edu.cn](https://www.puzzle.shu.edu.cn) | 上海大学期刊网 | - | 202.120.114.98 |
@@ -157,7 +157,7 @@
 | 200 | [xxgk.shu.edu.cn](https://xxgk.shu.edu.cn) | 上海大学信息公开网 | Vue.js | 202.120.114.98 |
 | 200 | [xyy.shu.edu.cn](https://xyy.shu.edu.cn) | 上海大学校医院 | - | 202.120.114.98 |
 | 200 | [yingxin.shu.edu.cn](https://yingxin.shu.edu.cn) | 上海大学迎新网站 | - | 202.120.114.98 |
-| 200 | 🔒 [yjs.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJ6cUZxODQwZXEybnJxRkM0dzAyWUY4NkMyNjRWNnIyMCIsImNsaWVudE5hbWUiOiLnoJTnqbbnlJ_ns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly95anMuc2h1LmVkdS5jbi9nc2FwcC9zeXMveWpzcnpmd2FwcC9vYXV0aF9zaHUvY2FsbGJhY2svODE1MDYwZDI3ZTlhNGQxMThjOWE0ZTE0YTU1MzFkMTYuZG8iLCJzdGF0ZSI6IjgxNTA2MGQyN2U5YTRkMTE4YzlhNGUxNGE1NTMxZDE2In0=) | 上海大学统一身份认证 | nginx | 202.120.114.163 |
+| 200 | 🔒 [yjs.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJ6cUZxODQwZXEybnJxRkM0dzAyWUY4NkMyNjRWNnIyMCIsImNsaWVudE5hbWUiOiLnoJTnqbbnlJ_ns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly95anMuc2h1LmVkdS5jbi9nc2FwcC9zeXMveWpzcnpmd2FwcC9vYXV0aF9zaHUvY2FsbGJhY2svYmIxNjM4MTAzYzBiNDhkZGFjZjE2YmEyYjgyMmM5YzUuZG8iLCJzdGF0ZSI6ImJiMTYzODEwM2MwYjQ4ZGRhY2YxNmJhMmI4MjJjOWM1In0=) | 上海大学统一身份认证 | nginx | 202.120.114.163 |
 | 200 | [yjszs.shu.edu.cn](https://yjszs.shu.edu.cn) | 上海大学研究生招生网 | - | 202.120.114.98 |
 | 200 | [youth.shu.edu.cn](https://youth.shu.edu.cn) | 共青团上海大学委员 | - | 202.120.114.98 |
 | 200 | [zbb.shu.edu.cn](https://zbb.shu.edu.cn) | 上海大学就业服务网 | Microsoft-IIS | 202.121.199.214 |
@@ -170,7 +170,7 @@
 | 200 | [atrust.shu.edu.cn](https://atrust.shu.edu.cn/portal/) | Loading... | - | 202.120.127.54 |
 | 200 | [en.shu.edu.cn](https://en.shu.edu.cn) | Shanghai University | PHP/7.2.34, nginx | 202.120.117.191 |
 | 200 | 🔒 [idp.shu.edu.cn](https://idp.shu.edu.cn) | Welcome to CentOS | nginx | 202.120.127.240 |
-| 400 | [kb.shu.edu.cn](https://kb.shu.edu.cn) | 400 | - | 45.113.20.91 |
+| 400 | [kb.shu.edu.cn](https://kb.shu.edu.cn) | 400 | - | 45.113.20.94 |
 | 404 | [live.shu.edu.cn](https://live.shu.edu.cn) | The website is temporarily unavailable | - | 202.120.117.70 |
 | 200 | [pay.shu.edu.cn](https://pay.shu.edu.cn) | У԰֧ƽ̨ | - | 202.120.117.112 |
 | 404 | [2022cms.shu.edu.cn](https://2022cms.shu.edu.cn) | HTTP状态 404 - 未找到 | - | 202.120.114.98 |
@@ -191,7 +191,7 @@
 | 403 | [libold.shu.edu.cn](https://libold.shu.edu.cn) | 403 Forbidden | - | 202.120.114.98 |
 | 200 | [lixiao.shu.edu.cn](https://lixiao.shu.edu.cn) | - | Microsoft-IIS | 202.120.117.246 |
 | 200 | [mam.shu.edu.cn](https://mam.shu.edu.cn) | - | nginx | 202.120.117.227 |
-| 400 | [notice.shu.edu.cn](https://notice.shu.edu.cn) | - | - | 45.113.20.79 |
+| 400 | [notice.shu.edu.cn](https://notice.shu.edu.cn) | - | - | 45.113.20.94 |
 | 404 | [oa.shu.edu.cn](https://oa.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
 | 404 | [pop.shu.edu.cn](https://pop.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
 | 404 | [pop3.shu.edu.cn](https://pop3.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
@@ -201,21 +201,24 @@
 | 200 | [vpn2.shu.edu.cn](https://vpn2.shu.edu.cn) | - | Server | 202.120.127.60 |
 | 404 | [web-test.shu.edu.cn](https://web-test.shu.edu.cn) | 404 Not Found | - | 202.120.114.98 |
 | 404 | [webtest1.shu.edu.cn](https://webtest1.shu.edu.cn) | 404 Not Found | - | 202.120.114.98 |
+| 200 | [webvpn.shu.edu.cn](https://webvpn.shu.edu.cn) | - | nginx | 202.120.117.103 |
 | 200 | [webvpn2.shu.edu.cn](https://webvpn.shu.edu.cn/go?https://webvpn2.shu.edu.cn/) | - | nginx | 202.120.117.104 |
 | 200 | [www.aim.shu.edu.cn](https://www.aim.shu.edu.cn) | - | nginx | 202.120.117.227 |
-| 200 | [www.amm.shu.edu.cn](https://www.amm.shu.edu.cn/) | - | nginx | 202.120.117.227 |
-| 200 | [www.camc.shu.edu.cn](https://www.camc.shu.edu.cn/) | - | nginx | 202.120.117.227 |
-| 200 | [www.cjs.shu.edu.cn](https://www.cjs.shu.edu.cn/) | - | nginx | 202.120.117.227 |
-| 200 | [www.eer.shu.edu.cn](https://www.eer.shu.edu.cn/) | - | nginx | 202.120.117.227 |
+| 200 | [www.amm.shu.edu.cn](https://www.amm.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.camc.shu.edu.cn](https://www.camc.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.cjs.shu.edu.cn](https://www.cjs.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.eer.shu.edu.cn](https://www.eer.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 500 | [www.ivp.shu.edu.cn](https://www.ivp.shu.edu.cn) | - | nginx | 202.120.117.251 |
 | 200 | [www.jas.shu.edu.cn](https://www.jas.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 200 | [www.jcs.shu.edu.cn](https://www.jcs.shu.edu.cn) | - | nginx | 202.120.117.227 |
-| 200 | [www.jorsc.shu.edu.cn](https://www.jorsc.shu.edu.cn/) | - | nginx | 202.120.117.227 |
-| 200 | [www.jsus.shu.edu.cn](https://www.jsus.shu.edu.cn/) | - | nginx | 202.120.117.227 |
+| 200 | [www.jorsc.shu.edu.cn](https://www.jorsc.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.journal.shu.edu.cn](https://www.journal.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.jsus.shu.edu.cn](https://www.jsus.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 403 | [www.jwc.shu.edu.cn](https://www.jwc.shu.edu.cn) | 403 Forbidden | - | 202.120.114.98 |
 | 500 | [www.math.shu.edu.cn](https://www.math.shu.edu.cn) | - | nginx | 202.120.117.251 |
 | 200 | [www.mishu.shu.edu.cn](https://www.mishu.shu.edu.cn) | - | nginx | 202.120.117.227 |
-| 200 | [www.nature.shu.edu.cn](https://www.nature.shu.edu.cn/) | - | nginx | 202.120.117.227 |
+| 200 | [www.nature.shu.edu.cn](https://www.nature.shu.edu.cn) | - | nginx | 202.120.117.227 |
+| 200 | [www.ort.shu.edu.cn](https://www.ort.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 200 | [www.society.shu.edu.cn](https://www.society.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 500 | [www.xubin.shu.edu.cn](https://www.xubin.shu.edu.cn) | - | nginx | 202.120.117.251 |
 
@@ -228,7 +231,6 @@
 
 发现的 C 段 ( /24 ):
 - `45.113.20.0/24`
-- `140.210.69.0/24`
 - `140.210.72.0/24`
 - `202.120.114.0/24`
 - `202.120.115.0/24`
