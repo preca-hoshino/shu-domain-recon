@@ -1,6 +1,6 @@
 **子域名探测分析**
 
-域名数量：108/249
+域名数量：110/249
 
 | 状态 | 域名 / URL | 标题 | 技术栈 | IP |
 | :---: | :--- | :--- | :--- | :--- |
@@ -31,11 +31,13 @@
 | 200 | [eportalmobile.shu.edu.cn](https://eportalmobile.shu.edu.cn) | 上海大学一网通办 2.0 | ASP.NET | 202.120.115.205 |
 | 200 | [fiber.shu.edu.cn](https://fiber.shu.edu.cn) | 上海大学 | Microsoft-IIS | 202.120.117.127 |
 | 200 | [fw.shu.edu.cn](https://fw.shu.edu.cn) | 上海大学妇女工作委员会 | Vue.js | 202.120.114.98 |
+| 200 | 🔒 [fxl.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiI3OUx6TDUzNng1OTg3TDRuNmtrQzAwNTVrUFJQbjNaNyIsImNsaWVudE5hbWUiOiLpnZ7lrabljobmlZnogrLnrqHnkIbns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly9meGwuc2h1LmVkdS5jbi8iLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.196 |
 | 200 | [gs.shu.edu.cn](https://gs.shu.edu.cn) | 上海大学研究生院 | - | 202.120.114.98 |
 | 200 | [hr.shu.edu.cn](https://hr.shu.edu.cn) | 上海大学人事处 | - | 202.120.114.98 |
+| 200 | [job.shu.edu.cn](https://job.shu.edu.cn/) | 就业系统 | nginx | 202.120.114.200 |
 | 200 | [jobs.shu.edu.cn](https://jobs.shu.edu.cn) | 上海大学招聘网 | ASP.NET, Microsoft-IIS, SAMEORIGIN | 202.120.116.24 |
 | 200 | 🔒 [jwxk.shu.edu.cn](https://oauth.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJFNDIyT0JrMjYxMVk0YlVFTzIxZ20xT0YxUnhrRkxRNiIsImNsaWVudE5hbWUiOiLmnKznoZXljZrpgInor77ns7vnu58iLCJzY29wZSI6IjEiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vand4ay5zaHUuZWR1LmNuL3hzeGsvb2F1dGgvY2FsbGJhY2siLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.162 |
-| 200 | [learning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 140.210.69.132 |
+| 200 | [learning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 42.62.2.150 |
 | 200 | [lib.shu.edu.cn](https://lib.shu.edu.cn) | 上海大学图书馆 | - | 202.120.114.98 |
 | 200 | [moa.shu.edu.cn](http://moa.shu.edu.cn/manage/dept/user/login/show) | 管理员登录 | - | 140.210.72.168 |
 | 200 | 🔒 [newmail.shu.edu.cn](https://oauth.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiI3Uk44b0NOdTAyU1I2OU4wNjU5MHZQdUQwUVpaOWZuMyIsImNsaWVudE5hbWUiOiLpgq7ku7bns7vnu58iLCJzY29wZSI6IjEiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vbmV3bWFpbC5zaHUuZWR1LmNuL2ludGVncmF0aW9uL3Nzby9vYXV0aDIiLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.126.66 |
@@ -43,30 +45,30 @@
 | 200 | 🔒 [newsso.shu.edu.cn](https://newsso.shu.edu.cn) | 上海大学统一身份认证 | nginx | 202.120.114.117 |
 | 200 | 🔒 [oauth.shu.edu.cn](https://oauth.shu.edu.cn) | 上海大学统一身份认证 | nginx | 202.120.114.117 |
 | 200 | [office.shu.edu.cn](https://www.cxlowcode.com) | 首页 | - | 140.210.72.164 |
-| 200 | 🔒 [pim.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJSVlYxbVpqbW54a3BZWVU4OUNpMXN0cHAiLCJjbGllbnROYW1lIjoiUElN5rWB56iL566h55CG57O757ufIiwic2NvcGUiOiIiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vcGltLnNodS5lZHUuY24vc3NvL2xvZ2luP3JlZGlyZWN0X3VyaT1odHRwcyUzQSUyRiUyRnBpbS5zaHUuZWR1LmNuJTJGc3NvJTJGb2F1dGgyJTJGYXV0aG9yaXplJTNGc2NvcGUlM0RvcGVuaWQlMjZyZXNwb25zZV90eXBlJTNEY29kZSUyNnJlZGlyZWN0X3VyaSUzRGh0dHBzJTI1M0ElMjUyRiUyNTJGcGltLnNodS5lZHUuY24lMjUyRmluZm9wbHVzJTI1MkZsb2dpbiUyNTNGcmV0VXJsJTI1M0RodHRwcyUyNTI1M0ElMjUyNTJGJTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyRmluZm9wbHVzJTI1MjUyRm9hdXRoMiUyNTI1MkZhdXRob3JpemUlMjUyNTNGeF9yZWRpcmVjdGVkJTI1MjUzRHRydWUlMjUyNTI2c2NvcGUlMjUyNTNEcHJvZmlsZSUyNTI1MkJwcm9maWxlX2VkaXQlMjUyNTJCYXBwJTI1MjUyQnRhc2slMjUyNTJCdGFza19lZGl0JTI1MjUyQnByb2Nlc3MlMjUyNTJCcHJvY2Vzc19lZGl0JTI1MjUyQnN1Ym1pdCUyNTI1MkJ0cmlwbGVfZWRpdCUyNTI1MkJ0cmlwbGUlMjUyNTJCc3RhdHMlMjUyNTJCc3lzX3Byb2ZpbGUlMjUyNTJCc3lzX2VudGVycHJpc2UlMjUyNTJCc3lzX3RyaXBsZSUyNTI1MkJzeXNfc3RhdHMlMjUyNTJCc3lzX2VudHJ1c3QlMjUyNTJCc3lzX2VudHJ1c3RfZWRpdCUyNTI1MkJzeXNfYXBwJTI1MjUyNnJlc3BvbnNlX3R5cGUlMjUyNTNEY29kZSUyNTI1MjZyZWRpcmVjdF91cmklMjUyNTNEaHR0cHMlMjUyNTI1M0ElMjUyNTI1MkYlMjUyNTI1MkZwaW0uc2h1LmVkdS5jbiUyNTI1MjUyRnRhc2tjZW50ZXIlMjUyNTI1MkZ3YWxsJTI1MjUyNTJGZW5kcG9pbnQlMjUyNTI1M0ZyZXRVcmwlMjUyNTI1M0RodHRwcyUyNTI1MjUyNTNBJTI1MjUyNTI1MkYlMjUyNTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyNTI1MkZ0YXNrY2VudGVyJTI1MjUyNTI1MkZ3b3JrZmxvdyUyNTI1MjUyNTJGaW5kZXglMjUyNTI2Y2xpZW50X2lkJTI1MjUzRDE2NDBlMmU0LWYyMTMtMTFlMy04MTVkLWZhMTYzZTkyMTViYiUyNnN0YXRlJTNEOGM2MjZmJTI2Y2xpZW50X2lkJTNEb0tadHhQaURPV1loSWw1MFVOWVMiLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.132 |
+| 200 | 🔒 [pim.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJSVlYxbVpqbW54a3BZWVU4OUNpMXN0cHAiLCJjbGllbnROYW1lIjoiUElN5rWB56iL566h55CG57O757ufIiwic2NvcGUiOiIiLCJyZWRpcmVjdFVyaSI6Imh0dHBzOi8vcGltLnNodS5lZHUuY24vc3NvL2xvZ2luP3JlZGlyZWN0X3VyaT1odHRwcyUzQSUyRiUyRnBpbS5zaHUuZWR1LmNuJTJGc3NvJTJGb2F1dGgyJTJGYXV0aG9yaXplJTNGc2NvcGUlM0RvcGVuaWQlMjZyZXNwb25zZV90eXBlJTNEY29kZSUyNnJlZGlyZWN0X3VyaSUzRGh0dHBzJTI1M0ElMjUyRiUyNTJGcGltLnNodS5lZHUuY24lMjUyRmluZm9wbHVzJTI1MkZsb2dpbiUyNTNGcmV0VXJsJTI1M0RodHRwcyUyNTI1M0ElMjUyNTJGJTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyRmluZm9wbHVzJTI1MjUyRm9hdXRoMiUyNTI1MkZhdXRob3JpemUlMjUyNTNGeF9yZWRpcmVjdGVkJTI1MjUzRHRydWUlMjUyNTI2c2NvcGUlMjUyNTNEcHJvZmlsZSUyNTI1MkJwcm9maWxlX2VkaXQlMjUyNTJCYXBwJTI1MjUyQnRhc2slMjUyNTJCdGFza19lZGl0JTI1MjUyQnByb2Nlc3MlMjUyNTJCcHJvY2Vzc19lZGl0JTI1MjUyQnN1Ym1pdCUyNTI1MkJ0cmlwbGVfZWRpdCUyNTI1MkJ0cmlwbGUlMjUyNTJCc3RhdHMlMjUyNTJCc3lzX3Byb2ZpbGUlMjUyNTJCc3lzX2VudGVycHJpc2UlMjUyNTJCc3lzX3RyaXBsZSUyNTI1MkJzeXNfc3RhdHMlMjUyNTJCc3lzX2VudHJ1c3QlMjUyNTJCc3lzX2VudHJ1c3RfZWRpdCUyNTI1MkJzeXNfYXBwJTI1MjUyNnJlc3BvbnNlX3R5cGUlMjUyNTNEY29kZSUyNTI1MjZyZWRpcmVjdF91cmklMjUyNTNEaHR0cHMlMjUyNTI1M0ElMjUyNTI1MkYlMjUyNTI1MkZwaW0uc2h1LmVkdS5jbiUyNTI1MjUyRnRhc2tjZW50ZXIlMjUyNTI1MkZ3YWxsJTI1MjUyNTJGZW5kcG9pbnQlMjUyNTI1M0ZyZXRVcmwlMjUyNTI1M0RodHRwcyUyNTI1MjUyNTNBJTI1MjUyNTI1MkYlMjUyNTI1MjUyRnBpbS5zaHUuZWR1LmNuJTI1MjUyNTI1MkZ0YXNrY2VudGVyJTI1MjUyNTI1MkZ3b3JrZmxvdyUyNTI1MjUyNTJGaW5kZXglMjUyNTI2Y2xpZW50X2lkJTI1MjUzRDE2NDBlMmU0LWYyMTMtMTFlMy04MTVkLWZhMTYzZTkyMTViYiUyNnN0YXRlJTNEZWIzMzE5JTI2Y2xpZW50X2lkJTNEb0tadHhQaURPV1loSWw1MFVOWVMiLCJzdGF0ZSI6IiJ9) | 上海大学统一身份认证 | nginx | 202.120.114.132 |
 | 500 | [portal.shu.edu.cn](https://portal.shu.edu.cn/index.html) | 系统异常 | wisedu | 202.120.114.161 |
 | 200 | [sec.shu.edu.cn](https://sec.shu.edu.cn/system/resource/code/auth/ipauth.htm) | 系统提示 | - | 202.120.114.98 |
 | 200 | [services.shu.edu.cn](https://services.shu.edu.cn) | 上海大学统一身份认证 | nginx | 202.120.114.117 |
 | 200 | [shusilc.shu.edu.cn](https://shusilc.shu.edu.cn) | 上海大学悉尼工商学院英文网站 | - | 202.120.114.98 |
 | 200 | [silclab.shu.edu.cn](https://silclab.shu.edu.cn) | 悉尼工商学院数智经管实验中心 | - | 202.120.114.98 |
 | 200 | [sociology.shu.edu.cn](https://sociology.shu.edu.cn) | 上海大学社会学院 | Vue.js | 202.120.114.98 |
-| 200 | 🔒 [task.shu.edu.cn](https://passport2.shu.edu.cn/login?fid=&newversion=true&refer=https%3A%2F%2Ftask.shu.edu.cn%2Ferror) | 用户登录 | - | 45.113.20.48 |
+| 200 | 🔒 [task.shu.edu.cn](https://passport2.shu.edu.cn/login?fid=&newversion=true&refer=https%3A%2F%2Ftask.shu.edu.cn%2Ferror) | 用户登录 | - | 45.113.20.50 |
 | 200 | [vpn.shu.edu.cn](https://vpn.shu.edu.cn) | 上海大学VPN使用说明 | - | 202.120.114.98 |
 | 200 | [wmzx.sdfz.shu.edu.cn](https://wmzx.sdfz.shu.edu.cn) | 上大附中文明在线 | - | 202.120.114.98 |
 | 200 | [www.cc.shu.edu.cn](https://metc.shu.edu.cn/) | 上海大学现代教育技术中心 | - | 202.120.119.170 |
-| 200 | [www.elearning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 140.210.69.131 |
+| 200 | [www.elearning.shu.edu.cn](https://learning.shu.edu.cn/portal) | 上海大学本科生院网络教学平台 | - | 140.210.69.130 |
 | 200 | 🔒 [www.icce.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJqWDlXc1VTbDFWTkJyNkNNX0t4S3QzWkEwVmtqX1pEbiIsImNsaWVudE5hbWUiOiLnu6fnu63mlZnogrLlrabpmaLmlZnliqHns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly93d3cuaWNjZS5zaHUuZWR1LmNuL3Bhc3Nwb3J0L3JldHVybiIsInN0YXRlIjoiIn0=) | 上海大学统一身份认证 | nginx | 202.120.115.208 |
 | 200 | [www.jpsu.shu.edu.cn](https://www.jpsu.shu.edu.cn) | 上海大学期刊社 | Vue.js | 202.120.114.98 |
 | 200 | [www.puzzle.shu.edu.cn](https://www.puzzle.shu.edu.cn) | 上海大学期刊网 | - | 202.120.114.98 |
 | 200 | [www.shu.edu.cn](https://www.shu.edu.cn) | 上海大学 | - | 202.120.114.98 |
 | 200 | [www.xk.shu.edu.cn](https://www.xk.shu.edu.cn) | 上海大学教务处选课网站 | - | 202.120.114.98 |
-| 200 | 🔒 [yjs.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJ6cUZxODQwZXEybnJxRkM0dzAyWUY4NkMyNjRWNnIyMCIsImNsaWVudE5hbWUiOiLnoJTnqbbnlJ_ns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly95anMuc2h1LmVkdS5jbi9nc2FwcC9zeXMveWpzcnpmd2FwcC9vYXV0aF9zaHUvY2FsbGJhY2svZDMwN2QyZjM5YjU0NDY3ZWI5NWYyZmY4YmMyNzE5MTcuZG8iLCJzdGF0ZSI6ImQzMDdkMmYzOWI1NDQ2N2ViOTVmMmZmOGJjMjcxOTE3In0=) | 上海大学统一身份认证 | nginx | 202.120.114.163 |
+| 200 | 🔒 [yjs.shu.edu.cn](https://newsso.shu.edu.cn/oauth2/login/eyJyZXNwb25zZVR5cGUiOiJjb2RlIiwiY2xpZW50SWQiOiJ6cUZxODQwZXEybnJxRkM0dzAyWUY4NkMyNjRWNnIyMCIsImNsaWVudE5hbWUiOiLnoJTnqbbnlJ_ns7vnu58iLCJzY29wZSI6IiIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly95anMuc2h1LmVkdS5jbi9nc2FwcC9zeXMveWpzcnpmd2FwcC9vYXV0aF9zaHUvY2FsbGJhY2svYzc1YmNiZjZmMGY4NDE0Yzk2YzRhOGQ0MTdhYTNlMzUuZG8iLCJzdGF0ZSI6ImM3NWJjYmY2ZjBmODQxNGM5NmM0YThkNDE3YWEzZTM1In0=) | 上海大学统一身份认证 | nginx | 202.120.114.163 |
 | 200 | [zbb.shu.edu.cn](https://zbb.shu.edu.cn) | 上海大学就业服务网 | Microsoft-IIS | 202.121.199.214 |
 | 200 | [adri.shu.edu.cn](https://adri.shu.edu.cn) | Asian Demographic Research Institute | - | 202.120.114.98 |
 | 200 | [atrust.shu.edu.cn](https://atrust.shu.edu.cn/portal/) | Loading... | - | 202.120.127.54 |
 | 200 | [en.shu.edu.cn](https://en.shu.edu.cn) | Shanghai University | PHP/7.2.34, nginx | 202.120.117.191 |
 | 200 | 🔒 [idp.shu.edu.cn](https://idp.shu.edu.cn) | Welcome to CentOS | nginx | 202.120.127.240 |
-| 400 | [kb.shu.edu.cn](https://kb.shu.edu.cn) | 400 | - | 45.113.20.97 |
+| 400 | [kb.shu.edu.cn](https://kb.shu.edu.cn) | 400 | - | 45.113.20.82 |
 | 404 | [live.shu.edu.cn](https://live.shu.edu.cn) | The website is temporarily unavailable | - | 202.120.117.70 |
 | 200 | [pay.shu.edu.cn](https://pay.shu.edu.cn) | У԰֧ƽ̨ | - | 202.120.117.112 |
 | 200 | [2022rmt.shu.edu.cn](https://2022rmt.shu.edu.cn) | - | - | 202.120.114.98 |
@@ -81,9 +83,8 @@
 | 404 | [imap.shu.edu.cn](https://imap.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
 | 200 | [lab.shu.edu.cn](https://lab.shu.edu.cn) | - | Microsoft-IIS | 202.120.116.224 |
 | 403 | [libold.shu.edu.cn](https://libold.shu.edu.cn) | 403 Forbidden | - | 202.120.114.98 |
-| 200 | [lixiao.shu.edu.cn](https://lixiao.shu.edu.cn) | - | Microsoft-IIS | 202.120.117.246 |
 | 200 | [mam.shu.edu.cn](https://mam.shu.edu.cn) | - | nginx | 202.120.117.227 |
-| 400 | [notice.shu.edu.cn](https://notice.shu.edu.cn) | - | - | 45.113.20.92 |
+| 400 | [notice.shu.edu.cn](https://notice.shu.edu.cn) | - | - | 45.113.20.97 |
 | 404 | [oa.shu.edu.cn](https://oa.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
 | 404 | [pop.shu.edu.cn](https://pop.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
 | 404 | [pop3.shu.edu.cn](https://pop3.shu.edu.cn) | 404 Not Found | cmproxy | 202.120.126.66 |
@@ -93,6 +94,7 @@
 | 200 | [vpn2.shu.edu.cn](https://vpn2.shu.edu.cn) | - | Server | 202.120.127.60 |
 | 200 | [vrm.cc.shu.edu.cn](https://vod.cc.shu.edu.cn/jy-application-resourcemanage-ui/) | - | nginx | 202.120.119.230 |
 | 404 | [webtest1.shu.edu.cn](https://webtest1.shu.edu.cn) | 404 Not Found | - | 202.120.114.98 |
+| 200 | [webvpn.shu.edu.cn](https://webvpn.shu.edu.cn) | - | nginx | 202.120.117.103 |
 | 200 | [webvpn2.shu.edu.cn](https://webvpn.shu.edu.cn/go?https://webvpn2.shu.edu.cn/) | - | nginx | 202.120.117.104 |
 | 200 | [www.aim.shu.edu.cn](https://www.aim.shu.edu.cn) | - | nginx | 202.120.117.227 |
 | 200 | [www.amm.shu.edu.cn](https://www.amm.shu.edu.cn) | - | nginx | 202.120.117.227 |
@@ -122,7 +124,6 @@
 
 发现的 C 段 ( /24 ):
 - `45.113.20.0/24`
-- `140.210.69.0/24`
 - `140.210.72.0/24`
 - `202.120.114.0/24`
 - `202.120.115.0/24`
